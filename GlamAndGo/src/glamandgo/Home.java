@@ -1,396 +1,165 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package glamandgo;
 
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
-public class Home extends JFrame {
+public class LogIn extends JFrame {
 
-    // Glam & Go color palette
+    // Glam & Go Color Palette
     private final Color PINK_50  = Color.decode("#FFF3F7");
     private final Color PINK_100 = Color.decode("#FFE4EC");
     private final Color PINK_200 = Color.decode("#F9CEDB");
     private final Color PINK_300 = Color.decode("#EAB3C4");
     private final Color PINK_500 = Color.decode("#C17690");
-    private final Color PINK_600 = Color.decode("#A05C74");
-    private final Color PINK_700 = Color.decode("#83455C");
     private final Color PINK_800 = Color.decode("#693146");
     private final Color PINK_900 = Color.decode("#4F1D31");
     private final Color PINK_950 = Color.decode("#390C1F");
 
-    private static final Font headingFont = loadFont("/fonts/Recia-Medium.otf", 26f);
-    private static final Font textFont = loadFont("/fonts/Sentient-Regular.otf", 15f);
+    // Fonts
+    private static final Font HEADING_FONT = loadFont("/fonts/Recia-Medium.otf");
+    private static final Font TEXT_FONT = loadFont("/fonts/Sentient-Regular.otf");
 
-    private static Font loadFont(String path, float size) {
-        try (InputStream stream = Home.class.getResourceAsStream(path)) {
-            if (stream == null) {
+    private static Font loadFont(String path) {
+        try (InputStream file = LogIn.class.getResourceAsStream(path)) {
+            if (file == null) {
                 throw new IllegalStateException("Font file not found: " + path);
             }
-            return Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(size);
+            return Font.createFont(Font.TRUETYPE_FONT, file);
         } catch (FontFormatException | IOException e) {
-            throw new IllegalStateException("Cannot load font: " + path, e);
+            throw new IllegalStateException("Could not load font: " + path, e);
         }
     }
 
-    public Home() {
-        setTitle("Glam & Go");
-        setSize(1100, 750);
-        setMinimumSize(new Dimension(800, 600));
+    public LogIn() {
+        setTitle("Glam & Go | Login");
+        setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+        setResizable(false);
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(Color.WHITE);
+        // Main background
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(PINK_50);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(new EmptyBorder(55, 65, 45, 65));
 
-        // Navigation bar
-        JPanel navigation = new JPanel(new BorderLayout());
-        navigation.setBackground(PINK_900);
-        navigation.setBorder(new EmptyBorder(18, 35, 18, 35));
+        // Brand name
+        JLabel brandLabel = new JLabel("GLAM & GO");
+        brandLabel.setFont(HEADING_FONT.deriveFont(38f));
+        brandLabel.setForeground(PINK_950);
+        brandLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel logo = new JLabel("Glam & Go");
-        logo.setFont(headingFont.deriveFont(27f));
-        logo.setForeground(PINK_50);
+        // Welcome message
+        JLabel welcomeLabel = new JLabel("Welcome Back");
+        welcomeLabel.setFont(HEADING_FONT.deriveFont(23f));
+        welcomeLabel.setForeground(PINK_900);
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JPanel menu = new JPanel(new FlowLayout(FlowLayout.RIGHT, 18, 5));
-        menu.setOpaque(false);
+        JLabel subtitleLabel = new JLabel("Your beauty journey starts here.");
+        subtitleLabel.setFont(TEXT_FONT.deriveFont(13f));
+        subtitleLabel.setForeground(PINK_800);
+        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        String[] menuItems = {
-            "Home", "Services", "Products", "Appointments", "My Account"
-        };
+        // Form panel
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(5, 1, 0, 10));
+        formPanel.setBackground(PINK_100);
+        formPanel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-        for (String item : menuItems) {
-            JButton button = new JButton(item);
-            button.setForeground(Color.WHITE);
-            button.setFont(textFont);
-            button.setContentAreaFilled(false);
-            button.setBorderPainted(false);
-            button.setFocusPainted(false);
-            menu.add(button);
-        }
+        // Username
+        JLabel usernameLabel = new JLabel("Username");
+        styleLabel(usernameLabel);
 
-        navigation.add(logo, BorderLayout.WEST);
-        navigation.add(menu, BorderLayout.EAST);
+        JTextField usernameField = new JTextField();
+        styleField(usernameField);
 
-        // Main scrollable content
-        JPanel content = new JPanel();
-        content.setLayout(new BoxLayout(content, BoxLayout.Y_AXIS));
-        content.setBackground(Color.WHITE);
+        // Password
+        JLabel passwordLabel = new JLabel("Password");
+        styleLabel(passwordLabel);
 
-        // Section 1: Hero
-        JPanel hero = new JPanel(new GridLayout(1, 2, 25, 10));
-        hero.setBackground(PINK_50);
-        hero.setBorder(new EmptyBorder(65, 55, 65, 55));
-        hero.setPreferredSize(new Dimension(1000, 330));
-        hero.setMaximumSize(new Dimension(Integer.MAX_VALUE, 330));
+        JPasswordField passwordField = new JPasswordField();
+        styleField(passwordField);
 
-        JPanel heroText = new JPanel();
-        heroText.setLayout(new BoxLayout(heroText, BoxLayout.Y_AXIS));
-        heroText.setOpaque(false);
+        // Login button
+        JButton loginButton = new JButton("LOG IN");
+        loginButton.setFont(TEXT_FONT.deriveFont(14f));
+        loginButton.setForeground(PINK_50);
+        loginButton.setBackground(PINK_500);
+        loginButton.setFocusPainted(false);
+        loginButton.setBorderPainted(false);
+        loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        JLabel welcome = new JLabel("Welcome to Glam & Go");
-        welcome.setFont(headingFont);
-        welcome.setForeground(PINK_900);
+        // Login action
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText().trim();
+            String password = new String(passwordField.getPassword());
 
-        JLabel slogan = new JLabel("<html>Your Beauty,<br>Your Way</html>");
-        slogan.setFont(headingFont.deriveFont(36f));
-        slogan.setForeground(PINK_600);
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Please enter your username and password.",
+                    "Missing Information",
+                    JOptionPane.WARNING_MESSAGE
+                );
+            } else {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Welcome to Glam & Go!",
+                    "Login",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        });
 
-        JLabel description = new JLabel(
-                "<html>Discover your beauty with our professional "
-                + "salon services and carefully selected products.</html>");
-        description.setFont(textFont);
-        description.setForeground(PINK_800);
-
-        JButton explore = createButton("Explore Services");
-
-        heroText.add(Box.createVerticalGlue());
-        heroText.add(welcome);
-        heroText.add(Box.createVerticalStrut(15));
-        heroText.add(slogan);
-        heroText.add(Box.createVerticalStrut(15));
-        heroText.add(description);
-        heroText.add(Box.createVerticalStrut(20));
-        heroText.add(explore);
-        heroText.add(Box.createVerticalGlue());
-
-        JPanel heroPlaceholder = createPlaceholder("Your Beauty Starts Here");
-        hero.add(heroText);
-        hero.add(heroPlaceholder);
-        content.add(hero);
-
-        // Section 2: Beauty experience
-        content.add(sectionTitle(
-                "The Glam & Go Experience",
-                "Everything you need for your beauty journey"));
-
-        JPanel experience = new JPanel(new GridLayout(1, 3, 20, 15));
-        experience.setBackground(Color.WHITE);
-        experience.setBorder(new EmptyBorder(15, 40, 35, 40));
-        experience.setMaximumSize(new Dimension(Integer.MAX_VALUE, 150));
-
-        experience.add(infoCard("Beauty Services", "Professional salon treatments"));
-        experience.add(infoCard("Expert Team", "Choose your favorite employee"));
-        experience.add(infoCard("Beauty Products", "Shop your favorite products"));
-
-        content.add(experience);
-
-        // Section 3: Categories
-        content.add(sectionTitle(
-                "Explore Our Categories",
-                "Find the perfect service for you"));
-
-        JPanel categories = new JPanel(new GridLayout(1, 3, 20, 15));
-        categories.setBackground(Color.WHITE);
-        categories.setBorder(new EmptyBorder(15, 40, 35, 40));
-        categories.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
-
-        categories.add(categoryCard("Hair Care"));
-        categories.add(categoryCard("Skin Care"));
-        categories.add(categoryCard("Nail Care"));
-
-        content.add(categories);
-
-        // Section 4: Appointment booking
-        JPanel booking = new JPanel(new GridLayout(1, 2, 25, 10));
-        booking.setBackground(PINK_100);
-        booking.setBorder(new EmptyBorder(35, 45, 35, 45));
-        booking.setMaximumSize(new Dimension(Integer.MAX_VALUE, 290));
-
-        JPanel bookingText = new JPanel();
-        bookingText.setOpaque(false);
-        bookingText.setLayout(new BoxLayout(bookingText, BoxLayout.Y_AXIS));
-
-        JLabel bookingTitle = new JLabel("<html>Your Beauty<br>Appointment</html>");
-        bookingTitle.setFont(headingFont);
-        bookingTitle.setForeground(PINK_900);
-
-        JLabel bookingDescription = new JLabel(
-                "<html>Ready for a beauty refresh?<br><br>"
-                + "Choose your service, select your employee, "
-                + "and book your preferred date and time.</html>");
-        bookingDescription.setFont(textFont);
-        bookingDescription.setForeground(PINK_800);
-
-        JButton bookButton = createButton("Book Your Appointment");
-
-        bookingText.add(Box.createVerticalGlue());
-        bookingText.add(bookingTitle);
-        bookingText.add(Box.createVerticalStrut(15));
-        bookingText.add(bookingDescription);
-        bookingText.add(Box.createVerticalStrut(20));
-        bookingText.add(bookButton);
-        bookingText.add(Box.createVerticalGlue());
-
-        booking.add(bookingText);
-        booking.add(createPlaceholder("Appointment Booking"));
-
-        content.add(Box.createVerticalStrut(25));
-        content.add(booking);
-
-        // Section 5: Products
-        content.add(sectionTitle(
-                "Our Beauty Collection",
-                "Discover our carefully selected products"));
-
-        JPanel products = new JPanel(new GridLayout(1, 3, 20, 15));
-        products.setBackground(Color.WHITE);
-        products.setBorder(new EmptyBorder(15, 40, 35, 40));
-        products.setMaximumSize(new Dimension(Integer.MAX_VALUE, 230));
-
-        products.add(productCard("Beauty Product 1", "48 SAR"));
-        products.add(productCard("Beauty Product 2", "62 SAR"));
-        products.add(productCard("Beauty Product 3", "56 SAR"));
-
-        content.add(products);
-
-        // Section 6: Customer reviews
-        content.add(sectionTitle(
-                "Loved by Our Customers",
-                "A little love from our beautiful customers"));
-
-        JPanel reviews = new JPanel(new GridLayout(1, 3, 20, 15));
-        reviews.setBackground(PINK_50);
-        reviews.setBorder(new EmptyBorder(25, 40, 35, 40));
-        reviews.setMaximumSize(new Dimension(Integer.MAX_VALUE, 180));
-
-        reviews.add(reviewCard("Amazing service and lovely staff!"));
-        reviews.add(reviewCard("I had a wonderful beauty experience."));
-        reviews.add(reviewCard("Beautiful products and great quality!"));
-
-        content.add(reviews);
+        // Add form components
+        formPanel.add(usernameLabel);
+        formPanel.add(usernameField);
+        formPanel.add(passwordLabel);
+        formPanel.add(passwordField);
+        formPanel.add(loginButton);
 
         // Footer
-        JPanel footer = new JPanel();
-        footer.setBackground(PINK_900);
-        footer.setBorder(new EmptyBorder(25, 10, 25, 10));
+        JLabel footerLabel = new JLabel("GLAM & GO  |  BEAUTY IN EVERY DETAIL");
+        footerLabel.setFont(TEXT_FONT.deriveFont(10f));
+        footerLabel.setForeground(PINK_800);
+        footerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        JLabel footerText = new JLabel("Glam & Go | Your Beauty, Your Way");
-        footerText.setForeground(Color.WHITE);
-        footerText.setFont(textFont);
+        // Build page
+        mainPanel.add(brandLabel);
+        mainPanel.add(Box.createVerticalStrut(18));
+        mainPanel.add(welcomeLabel);
+        mainPanel.add(Box.createVerticalStrut(8));
+        mainPanel.add(subtitleLabel);
+        mainPanel.add(Box.createVerticalStrut(40));
+        mainPanel.add(formPanel);
+        mainPanel.add(Box.createVerticalGlue());
+        mainPanel.add(footerLabel);
 
-        footer.add(footerText);
-        footer.setMaximumSize(new Dimension(Integer.MAX_VALUE, 75));
-        content.add(footer);
-
-        // Scroll pane
-        JScrollPane scrollPane = new JScrollPane(content);
-        scrollPane.setBorder(null);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(18);
-        scrollPane.setHorizontalScrollBarPolicy(
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        mainPanel.add(navigation, BorderLayout.NORTH);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-        setContentPane(mainPanel);
+        add(mainPanel);
     }
 
-    // Section heading
-    private JPanel sectionTitle(String title, String subtitle) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
-        panel.setBackground(Color.WHITE);
-        panel.setBorder(new EmptyBorder(35, 40, 10, 40));
-        panel.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
-
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setFont(headingFont);
-        titleLabel.setForeground(PINK_900);
-
-        JLabel subtitleLabel = new JLabel(subtitle);
-        subtitleLabel.setFont(textFont);
-        subtitleLabel.setForeground(PINK_600);
-
-        panel.add(titleLabel);
-        panel.add(Box.createVerticalStrut(8));
-        panel.add(subtitleLabel);
-
-        return panel;
+    // Label styling
+    private void styleLabel(JLabel label) {
+        label.setFont(TEXT_FONT.deriveFont(14f));
+        label.setForeground(PINK_950);
     }
 
-    // Information card
-    private JPanel infoCard(String title, String description) {
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(PINK_50);
-        card.setBorder(new EmptyBorder(25, 18, 25, 18));
-
-        JLabel name = new JLabel(title);
-        name.setFont(headingFont.deriveFont(19f));
-        name.setForeground(PINK_900);
-
-        JLabel desc = new JLabel(description);
-        desc.setFont(textFont);
-        desc.setForeground(PINK_700);
-
-        card.add(name);
-        card.add(Box.createVerticalStrut(12));
-        card.add(desc);
-
-        return card;
-    }
-
-    // Category card
-    private JPanel categoryCard(String name) {
-        JPanel card = new JPanel(new BorderLayout());
-        card.setBackground(PINK_100);
-        card.setBorder(new EmptyBorder(40, 15, 40, 15));
-
-        JLabel label = new JLabel(name);
-        label.setFont(headingFont.deriveFont(22f));
-        label.setForeground(PINK_900);
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-
-        card.add(label, BorderLayout.CENTER);
-
-        return card;
-    }
-
-    // Product card
-    private JPanel productCard(String name, String price) {
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(Color.WHITE);
-        card.setBorder(BorderFactory.createLineBorder(PINK_200));
-
-        JPanel placeholder = createPlaceholder("Product");
-
-        JLabel productName = new JLabel(name);
-        productName.setFont(headingFont.deriveFont(18f));
-        productName.setForeground(PINK_900);
-        productName.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel productPrice = new JLabel(price);
-        productPrice.setFont(textFont);
-        productPrice.setForeground(PINK_700);
-        productPrice.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        card.add(placeholder);
-        card.add(Box.createVerticalStrut(10));
-        card.add(productName);
-        card.add(Box.createVerticalStrut(5));
-        card.add(productPrice);
-
-        return card;
-    }
-
-    // Review card
-    private JPanel reviewCard(String review) {
-        JPanel card = new JPanel(new BorderLayout(5, 15));
-        card.setBackground(Color.WHITE);
-        card.setBorder(new EmptyBorder(20, 15, 20, 15));
-
-        JLabel stars = new JLabel("★★★★★");
-        stars.setFont(new Font("Serif", Font.BOLD, 20));
-        stars.setForeground(PINK_500);
-
-        JLabel reviewText = new JLabel("<html>" + review + "</html>");
-        reviewText.setFont(textFont);
-        reviewText.setForeground(PINK_900);
-
-        card.add(stars, BorderLayout.NORTH);
-        card.add(reviewText, BorderLayout.CENTER);
-
-        return card;
-    }
-
-    // Temporary image placeholder
-    private JPanel createPlaceholder(String text) {
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(PINK_200);
-        panel.setBorder(BorderFactory.createLineBorder(PINK_300));
-        panel.setPreferredSize(new Dimension(350, 180));
-
-        JLabel label = new JLabel(text);
-        label.setFont(headingFont);
-        label.setForeground(PINK_800);
-
-        panel.add(label);
-
-        return panel;
-    }
-
-    // Styled button
-    private JButton createButton(String text) {
-        JButton button = new JButton(text);
-        button.setBackground(PINK_600);
-        button.setForeground(Color.WHITE);
-        button.setFont(textFont);
-        button.setFocusPainted(false);
-        button.setBorder(new EmptyBorder(12, 20, 12, 20));
-        button.setCursor(new Cursor(Cursor.HAND_CURSOR));
-
-        return button;
+    // Text field styling
+    private void styleField(JTextField field) {
+        field.setFont(TEXT_FONT.deriveFont(14f));
+        field.setForeground(PINK_950);
+        field.setBackground(PINK_50);
+        field.setCaretColor(PINK_900);
+        field.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PINK_300, 1),
+            new EmptyBorder(8, 10, 8, 10)
+        ));
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new Home().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new LogIn().setVisible(true));
     }
 }

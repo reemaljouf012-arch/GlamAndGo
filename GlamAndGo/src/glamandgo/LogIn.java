@@ -7,6 +7,8 @@ package glamandgo;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class LogIn extends JFrame {
 
@@ -21,11 +23,21 @@ public class LogIn extends JFrame {
     private final Color PINK_950 = Color.decode("#390C1F");
 
     // Fonts
-    private final String HEADING_FONT = "Recia";
-    private final String TEXT_FONT = "Sentient";
+    private static final Font HEADING_FONT = loadFont("/fonts/Recia-Medium.otf");
+    private static final Font TEXT_FONT = loadFont("/fonts/Sentient-Regular.otf");
+
+    private static Font loadFont(String path) {
+        try (InputStream file = LogIn.class.getResourceAsStream(path)) {
+            if (file == null) {
+                throw new IllegalStateException("Font file not found: " + path);
+            }
+            return Font.createFont(Font.TRUETYPE_FONT, file);
+        } catch (FontFormatException | IOException e) {
+            throw new IllegalStateException("Could not load font: " + path, e);
+        }
+    }
 
     public LogIn() {
-
         setTitle("Glam & Go | Login");
         setSize(500, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,18 +52,18 @@ public class LogIn extends JFrame {
 
         // Brand name
         JLabel brandLabel = new JLabel("GLAM & GO");
-        brandLabel.setFont(new Font(HEADING_FONT, Font.PLAIN, 38));
+        brandLabel.setFont(HEADING_FONT.deriveFont(38f));
         brandLabel.setForeground(PINK_950);
         brandLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Welcome message
         JLabel welcomeLabel = new JLabel("Welcome Back");
-        welcomeLabel.setFont(new Font(HEADING_FONT, Font.PLAIN, 23));
+        welcomeLabel.setFont(HEADING_FONT.deriveFont(23f));
         welcomeLabel.setForeground(PINK_900);
         welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         JLabel subtitleLabel = new JLabel("Your beauty journey starts here.");
-        subtitleLabel.setFont(new Font(TEXT_FONT, Font.PLAIN, 13));
+        subtitleLabel.setFont(TEXT_FONT.deriveFont(13f));
         subtitleLabel.setForeground(PINK_800);
         subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -77,7 +89,7 @@ public class LogIn extends JFrame {
 
         // Login button
         JButton loginButton = new JButton("LOG IN");
-        loginButton.setFont(new Font(TEXT_FONT, Font.BOLD, 14));
+        loginButton.setFont(TEXT_FONT.deriveFont(14f));
         loginButton.setForeground(PINK_50);
         loginButton.setBackground(PINK_500);
         loginButton.setFocusPainted(false);
@@ -86,21 +98,17 @@ public class LogIn extends JFrame {
 
         // Login action
         loginButton.addActionListener(e -> {
-
             String username = usernameField.getText().trim();
             String password = new String(passwordField.getPassword());
 
             if (username.isEmpty() || password.isEmpty()) {
-
                 JOptionPane.showMessageDialog(
                     this,
                     "Please enter your username and password.",
                     "Missing Information",
                     JOptionPane.WARNING_MESSAGE
                 );
-
             } else {
-
                 JOptionPane.showMessageDialog(
                     this,
                     "Welcome to Glam & Go!",
@@ -119,7 +127,7 @@ public class LogIn extends JFrame {
 
         // Footer
         JLabel footerLabel = new JLabel("GLAM & GO  |  BEAUTY IN EVERY DETAIL");
-        footerLabel.setFont(new Font(TEXT_FONT, Font.PLAIN, 10));
+        footerLabel.setFont(TEXT_FONT.deriveFont(10f));
         footerLabel.setForeground(PINK_800);
         footerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -139,13 +147,13 @@ public class LogIn extends JFrame {
 
     // Label styling
     private void styleLabel(JLabel label) {
-        label.setFont(new Font(TEXT_FONT, Font.PLAIN, 14));
+        label.setFont(TEXT_FONT.deriveFont(14f));
         label.setForeground(PINK_950);
     }
 
     // Text field styling
     private void styleField(JTextField field) {
-        field.setFont(new Font(TEXT_FONT, Font.PLAIN, 14));
+        field.setFont(TEXT_FONT.deriveFont(14f));
         field.setForeground(PINK_950);
         field.setBackground(PINK_50);
         field.setCaretColor(PINK_900);
@@ -156,8 +164,6 @@ public class LogIn extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            new LogIn().setVisible(true);
-        });
+        SwingUtilities.invokeLater(() -> new LogIn().setVisible(true));
     }
 }

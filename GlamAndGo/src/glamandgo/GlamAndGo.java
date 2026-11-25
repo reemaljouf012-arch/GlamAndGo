@@ -15,6 +15,10 @@ public class GlamAndGo {
      */
     public static void main(String[] args) {
 System.out.println("reem");
+        // TODO code application logic here
+        // Ghala sync test
+        // rawan 
+        
     }
     
 }

@@ -14,7 +14,7 @@ public class LogIn extends JFrame {
 private JTextField usernameField;
 private JPasswordField passwordField;
 
-public LoginFrame() {
+public LogIn() {
 
     setTitle("Glam & Go - Login");
     setSize(450, 550);
@@ -122,6 +122,6 @@ private void login() {
 
 public static void main(String[] args) {
     SwingUtilities.invokeLater(() -> {
-        new LoginFrame().setVisible(true);
+        new LogIn().setVisible(true);
     });
 }}

@@ -1,127 +1,165 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package glamandgo;
 
-
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class LogIn extends JFrame {
 
-private JTextField usernameField;
-private JPasswordField passwordField;
+    // Glam & Go Color Palette
+    private final Color PINK_50  = Color.decode("#FFF3F7");
+    private final Color PINK_100 = Color.decode("#FFE4EC");
+    private final Color PINK_200 = Color.decode("#F9CEDB");
+    private final Color PINK_300 = Color.decode("#EAB3C4");
+    private final Color PINK_500 = Color.decode("#C17690");
+    private final Color PINK_800 = Color.decode("#693146");
+    private final Color PINK_900 = Color.decode("#4F1D31");
+    private final Color PINK_950 = Color.decode("#390C1F");
 
-public LogIn() {
+    // Fonts
+    private static final Font HEADING_FONT = loadFont("/fonts/Recia-Medium.otf");
+    private static final Font TEXT_FONT = loadFont("/fonts/Sentient-Regular.otf");
 
-    setTitle("Glam & Go - Login");
-    setSize(450, 550);
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    setLocationRelativeTo(null);
-    setResizable(false);
+    private static Font loadFont(String path) {
+        try (InputStream file = LogIn.class.getResourceAsStream(path)) {
+            if (file == null) {
+                throw new IllegalStateException("Font file not found: " + path);
+            }
+            return Font.createFont(Font.TRUETYPE_FONT, file);
+        } catch (FontFormatException | IOException e) {
+            throw new IllegalStateException("Could not load font: " + path, e);
+        }
+    }
 
-    // Main Panel
-    JPanel mainPanel = new JPanel();
-    mainPanel.setBackground(new Color(38, 24, 48));
-    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-    mainPanel.setBorder(new EmptyBorder(45, 55, 35, 55));
+    public LogIn() {
+        setTitle("Glam & Go | Login");
+        setSize(500, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
 
-    // Application Title
-    JLabel title = new JLabel("GLAM & GO");
-    title.setFont(new Font("Serif", Font.BOLD, 32));
-    title.setForeground(new Color(225, 173, 213));
-    title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Main background
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(PINK_50);
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setBorder(new EmptyBorder(55, 65, 45, 65));
 
-    JLabel subtitle = new JLabel("Welcome Back!");
-    subtitle.setFont(new Font("SansSerif", Font.PLAIN, 18));
-    subtitle.setForeground(Color.WHITE);
-    subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Brand name
+        JLabel brandLabel = new JLabel("GLAM & GO");
+        brandLabel.setFont(HEADING_FONT.deriveFont(38f));
+        brandLabel.setForeground(PINK_950);
+        brandLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    // Username
-    JLabel usernameLabel = new JLabel("Username");
-    styleLabel(usernameLabel);
+        // Welcome message
+        JLabel welcomeLabel = new JLabel("Welcome Back");
+        welcomeLabel.setFont(HEADING_FONT.deriveFont(23f));
+        welcomeLabel.setForeground(PINK_900);
+        welcomeLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    usernameField = new JTextField();
-    styleField(usernameField);
+        JLabel subtitleLabel = new JLabel("Your beauty journey starts here.");
+        subtitleLabel.setFont(TEXT_FONT.deriveFont(13f));
+        subtitleLabel.setForeground(PINK_800);
+        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-    // Password
-    JLabel passwordLabel = new JLabel("Password");
-    styleLabel(passwordLabel);
+        // Form panel
+        JPanel formPanel = new JPanel();
+        formPanel.setLayout(new GridLayout(5, 1, 0, 10));
+        formPanel.setBackground(PINK_100);
+        formPanel.setBorder(new EmptyBorder(25, 25, 25, 25));
 
-    passwordField = new JPasswordField();
-    styleField(passwordField);
+        // Username
+        JLabel usernameLabel = new JLabel("Username");
+        styleLabel(usernameLabel);
 
-    // Login Button
-    JButton loginButton = new JButton("LOGIN");
-    loginButton.setFont(new Font("SansSerif", Font.BOLD, 16));
-    loginButton.setBackground(new Color(225, 173, 213));
-    loginButton.setForeground(new Color(38, 24, 48));
-    loginButton.setFocusPainted(false);
-    loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-    loginButton.setMaximumSize(new Dimension(340, 45));
+        JTextField usernameField = new JTextField();
+        styleField(usernameField);
 
-    loginButton.addActionListener(e -> login());
+        // Password
+        JLabel passwordLabel = new JLabel("Password");
+        styleLabel(passwordLabel);
 
-    // Sign Up
-    JLabel signupLabel = new JLabel("Don't have an account? Sign Up");
-    signupLabel.setFont(new Font("SansSerif", Font.PLAIN, 12));
-    signupLabel.setForeground(new Color(225, 173, 213));
-    signupLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        JPasswordField passwordField = new JPasswordField();
+        styleField(passwordField);
 
-    // Add Components
-    mainPanel.add(title);
-    mainPanel.add(Box.createVerticalStrut(10));
-    mainPanel.add(subtitle);
-    mainPanel.add(Box.createVerticalStrut(40));
+        // Login button
+        JButton loginButton = new JButton("LOG IN");
+        loginButton.setFont(TEXT_FONT.deriveFont(14f));
+        loginButton.setForeground(PINK_50);
+        loginButton.setBackground(PINK_500);
+        loginButton.setFocusPainted(false);
+        loginButton.setBorderPainted(false);
+        loginButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-    mainPanel.add(usernameLabel);
-    mainPanel.add(Box.createVerticalStrut(8));
-    mainPanel.add(usernameField);
-    mainPanel.add(Box.createVerticalStrut(22));
+        // Login action
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText().trim();
+            String password = new String(passwordField.getPassword());
 
-    mainPanel.add(passwordLabel);
-    mainPanel.add(Box.createVerticalStrut(8));
-    mainPanel.add(passwordField);
-    mainPanel.add(Box.createVerticalStrut(30));
+            if (username.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Please enter your username and password.",
+                    "Missing Information",
+                    JOptionPane.WARNING_MESSAGE
+                );
+            } else {
+                JOptionPane.showMessageDialog(
+                    this,
+                    "Welcome to Glam & Go!",
+                    "Login",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
+        });
 
-    mainPanel.add(loginButton);
-    mainPanel.add(Box.createVerticalStrut(25));
-    mainPanel.add(signupLabel);
+        // Add form components
+        formPanel.add(usernameLabel);
+        formPanel.add(usernameField);
+        formPanel.add(passwordLabel);
+        formPanel.add(passwordField);
+        formPanel.add(loginButton);
 
-    add(mainPanel);
-}
+        // Footer
+        JLabel footerLabel = new JLabel("GLAM & GO  |  BEAUTY IN EVERY DETAIL");
+        footerLabel.setFont(TEXT_FONT.deriveFont(10f));
+        footerLabel.setForeground(PINK_800);
+        footerLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-private void styleLabel(JLabel label) {
-    label.setFont(new Font("SansSerif", Font.BOLD, 14));
-    label.setForeground(Color.WHITE);
-    label.setAlignmentX(Component.LEFT_ALIGNMENT);
-}
+        // Build page
+        mainPanel.add(brandLabel);
+        mainPanel.add(Box.createVerticalStrut(18));
+        mainPanel.add(welcomeLabel);
+        mainPanel.add(Box.createVerticalStrut(8));
+        mainPanel.add(subtitleLabel);
+        mainPanel.add(Box.createVerticalStrut(40));
+        mainPanel.add(formPanel);
+        mainPanel.add(Box.createVerticalGlue());
+        mainPanel.add(footerLabel);
 
-private void styleField(JTextField field) {
-    field.setFont(new Font("SansSerif", Font.PLAIN, 14));
-    field.setMaximumSize(new Dimension(340, 40));
-    field.setPreferredSize(new Dimension(340, 40));
-}
+        add(mainPanel);
+    }
 
-private void login() {
-    String username = usernameField.getText();
-    String password = new String(passwordField.getPassword());
+    // Label styling
+    private void styleLabel(JLabel label) {
+        label.setFont(TEXT_FONT.deriveFont(14f));
+        label.setForeground(PINK_950);
+    }
 
-    if (username.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(
-            this, "Please enter username and password."
-        );
-    } else {
-        JOptionPane.showMessageDialog(
-            this, "Login button is working!"
-        );
+    // Text field styling
+    private void styleField(JTextField field) {
+        field.setFont(TEXT_FONT.deriveFont(14f));
+        field.setForeground(PINK_950);
+        field.setBackground(PINK_50);
+        field.setCaretColor(PINK_900);
+        field.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(PINK_300, 1),
+            new EmptyBorder(8, 10, 8, 10)
+        ));
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new LogIn().setVisible(true));
     }
 }
-
-public static void main(String[] args) {
-    SwingUtilities.invokeLater(() -> {
-        new LogIn().setVisible(true);
-    });
-}}

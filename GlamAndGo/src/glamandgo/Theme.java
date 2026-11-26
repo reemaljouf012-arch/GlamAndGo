@@ -414,7 +414,6 @@ public final class Theme {
     /** Product card image area with badge and heart. */
     static class ProductTile extends JComponent {
         private final Product product;
-        private boolean liked;
         private final Rectangle heart = new Rectangle();
 
         ProductTile(Product product, Runnable onOpen) {
@@ -425,7 +424,7 @@ public final class Theme {
             addMouseListener(new MouseAdapter() {
                 @Override public void mouseClicked(MouseEvent e) {
                     if (heart.contains(e.getPoint())) {
-                        liked = !liked;
+                        product.liked = !product.liked;
                         repaint();
                     } else {
                         onOpen.run();
@@ -477,7 +476,7 @@ public final class Theme {
 
             heart.setBounds(w - sh - 48, sh + 12, 34, 30);
             Path2D hs = heartShape(heart.x + 4, heart.y + 5, 26, 22);
-            if (liked) {
+            if (product.liked) {
                 g.setColor(PINK_500);
                 g.fill(hs);
             } else {
@@ -493,8 +492,11 @@ public final class Theme {
     static class Product {
         final String name, desc, category, badge, image;
         final double price, rating;
+        final int quantity, salesCount;   // stock and number sold
+        boolean liked;                    // heart state, kept while the app is open
 
-        Product(String name, String desc, String category, String badge, double price, double rating, String image) {
+        Product(String name, String desc, String category, String badge, double price, double rating, String image,
+                int quantity, int salesCount) {
             this.name = name;
             this.desc = desc;
             this.category = category;
@@ -502,18 +504,32 @@ public final class Theme {
             this.price = price;
             this.rating = rating;
             this.image = image;
+            this.quantity = quantity;
+            this.salesCount = salesCount;
         }
     }
 
     static final Product[] PRODUCTS = {
-        new Product("Silk Repair Serum",   "Smooth & shiny hair",   "Hair Care", "Best seller", 48, 4, "/images/product1.jpg"),
-        new Product("Rose Glow Cream",     "Deep hydration",        "Skincare",  null,          62, 5, "/images/product2.jpg"),
-        new Product("Gentle Foam Cleanser","Fresh daily cleanse",   "Skincare",  "New",         56, 4, "/images/product3.jpg"),
-        new Product("Velvet Matte Lipstick","Rich long-wear color", "Makeup",    null,          45, 4, "/images/product4.jpg"),
-        new Product("Keratin Hair Mask",   "Repair & nourish",      "Hair Care", null,          52, 5, "/images/product5.jpg"),
-        new Product("Cuticle Care Oil",    "Strong, healthy nails", "Nails",     "New",         28, 4, "/images/product6.jpg"),
-        new Product("Radiance Foundation", "Natural glowing finish","Makeup",    null,          70, 4, "/images/product7.jpg"),
-        new Product("Daily Sun Shield",    "SPF 50 protection",     "Skincare",  "Best seller", 45, 5, "/images/product8.jpg"),
+        new Product("Silk Repair Serum", "Smooth & shiny hair", "Hair Care", "Best seller", 48, 4, "/images/product1.jpg", 12, 320),
+        new Product("Rose Glow Cream", "Deep hydration", "Skincare", null, 62, 5, "/images/product2.jpg", 8, 210),
+        new Product("Gentle Foam Cleanser", "Fresh daily cleanse", "Skincare", "New", 56, 4, "/images/product3.jpg", 15, 95),
+        new Product("Velvet Matte Lipstick", "Rich long-wear color", "Makeup", null, 45, 4, "/images/product4.jpg", 0, 180),
+        new Product("Keratin Hair Mask", "Repair & nourish", "Hair Care", null, 52, 5, "/images/product5.jpg", 6, 150),
+        new Product("Cuticle Care Oil", "Strong, healthy nails", "Nails", "New", 28, 4, "/images/product6.jpg", 20, 70),
+        new Product("Radiance Foundation", "Natural glowing finish", "Makeup", null, 70, 4, "/images/product7.jpg", 9, 130),
+        new Product("Daily Sun Shield", "SPF 50 protection", "Skincare", "Best seller", 45, 5, "/images/product8.jpg", 11, 290),
+        new Product("Argan Hair Oil", "Frizz control", "Hair Care", null, 64, 4, "/images/product1.jpg", 7, 115),
+        new Product("Soft Pink Nail Polish", "Glossy finish", "Nails", null, 22, 4, "/images/product2.jpg", 25, 160),
+        new Product("Hydrating Lip Balm", "Soft, smooth lips", "Skincare", null, 24, 3, "/images/product3.jpg", 0, 60),
+        new Product("Silky Blush", "Natural rosy tint", "Makeup", "New", 58, 5, "/images/product4.jpg", 14, 85),
+        new Product("Moisture Shampoo", "Gentle cleansing", "Hair Care", null, 39, 4, "/images/product5.jpg", 18, 200),
+        new Product("Nail Strengthener", "Less breakage", "Nails", null, 34, 3, "/images/product6.jpg", 0, 40),
+        new Product("Volume Mascara", "Full, long lashes", "Makeup", "Best seller", 55, 5, "/images/product7.jpg", 10, 305),
+        new Product("Night Repair Cream", "Overnight renewal", "Skincare", null, 120, 5, "/images/product8.jpg", 4, 75),
+        new Product("Heat Protect Spray", "Styling protection", "Hair Care", "New", 42, 4, "/images/product1.jpg", 13, 100),
+        new Product("Gel Polish Set", "Six salon shades", "Nails", null, 95, 4, "/images/product2.jpg", 5, 55),
+        new Product("Pro Makeup Palette", "Everyday shades", "Makeup", null, 185, 5, "/images/product3.jpg", 3, 90),
+        new Product("Scalp Care Tonic", "Healthy scalp", "Hair Care", null, 76, 3, "/images/product4.jpg", 0, 35),
     };
 
     // ===================== Shared Navbar / Footer / Product card =====================

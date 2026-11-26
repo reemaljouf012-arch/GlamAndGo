@@ -214,7 +214,10 @@ public class Home extends JFrame {
             case "Home":
                 break;
             // case "Services":     new Services().setVisible(true);    dispose(); break;
-            // case "Products":     new Products().setVisible(true);    dispose(); break;
+            case "Products":
+                new Products().setVisible(true);
+                dispose();
+                break;
             // case "Appointments": new Appointments().setVisible(true); dispose(); break;
             // case "Cart":         new Cart().setVisible(true);        dispose(); break;
             // case "My Account":   new MyAccount().setVisible(true);   dispose(); break;

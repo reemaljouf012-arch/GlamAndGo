@@ -262,12 +262,12 @@ public class Services extends JFrame {
         description.setEditable(false);
         description.setOpaque(false);
         description.setRows(2);
-JLabel price = new JLabel(
-        String.format(java.util.Locale.US, "SAR %.2f", service.price)
-);
-price.setFont(new Font("Serif", Font.PLAIN, 22));
-price.setForeground(PINK_800);
-        
+
+        JLabel price = new JLabel(
+                String.format(java.util.Locale.US, "SAR %.2f", service.price)
+        );
+        price.setFont(new Font("Serif", Font.PLAIN, 22));
+        price.setForeground(PINK_800);
 
         PillButton bookButton = new PillButton(
                 "Book Now", 15, 20, 9
@@ -276,13 +276,8 @@ price.setForeground(PINK_800);
         bookButton.style(PINK_800, Color.WHITE, null, PINK_900);
 
         bookButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "You selected: " + service.name
-                            + "\nEmployee selection will be available soon.",
-                    "Glam & Go",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
+            new Employees(service.name, service.category).setVisible(true);
+            dispose();
         });
 
         for (JComponent component : new JComponent[]{

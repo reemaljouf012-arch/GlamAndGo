@@ -11,208 +11,262 @@ public class Employees extends JFrame {
     private final String serviceName;
     private final String category;
 
-    private final Color PINK = new Color(190, 95, 125);
-    private final Color DARK = new Color(65, 45, 55);
-    private final Color LIGHT = new Color(255, 244, 248);
+    private final Color PINK = new Color(220, 145, 165);
+    private final Color DARK_PINK = new Color(170, 90, 115);
+    private final Color LIGHT_PINK = new Color(255, 245, 248);
+    private final Color TEXT_COLOR = new Color(65, 55, 60);
 
-    private JPanel employeesPanel;
+    public Employees(String serviceName, String category) {
+        this.serviceName = serviceName;
+        this.category = category;
 
-    private class Employee {
+        setTitle("Choose Employee - Glam & Go");
+        setSize(1000, 750);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        buildPage();
+    }
+
+    private void buildPage() {
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setBorder(new EmptyBorder(35, 40, 35, 40));
+
+        JLabel title = new JLabel(
+                "Choose Your Employee",
+                SwingConstants.CENTER
+        );
+        title.setFont(new Font("Serif", Font.BOLD, 34));
+        title.setForeground(DARK_PINK);
+
+        JLabel subtitle = new JLabel(
+                "Select an employee for " + serviceName,
+                SwingConstants.CENTER
+        );
+        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 16));
+        subtitle.setForeground(TEXT_COLOR);
+
+        JPanel header = new JPanel();
+        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
+        header.setBackground(Color.WHITE);
+
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        header.add(title);
+        header.add(Box.createVerticalStrut(12));
+        header.add(subtitle);
+        header.add(Box.createVerticalStrut(35));
+
+        mainPanel.add(header, BorderLayout.NORTH);
+
+        JPanel employeesPanel = new JPanel(
+                new FlowLayout(FlowLayout.CENTER, 25, 20)
+        );
+        employeesPanel.setBackground(Color.WHITE);
+
+        ArrayList<Employee> employees = getEmployees();
+
+        for (Employee employee : employees) {
+            employeesPanel.add(createEmployeeCard(employee));
+        }
+
+        JScrollPane scrollPane = new JScrollPane(employeesPanel);
+        scrollPane.setBorder(null);
+        scrollPane.getViewport().setBackground(Color.WHITE);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
+        mainPanel.add(scrollPane, BorderLayout.CENTER);
+
+        setContentPane(mainPanel);
+    }
+
+    private JPanel createEmployeeCard(Employee employee) {
+
+        JPanel card = new JPanel(new BorderLayout());
+        card.setBackground(LIGHT_PINK);
+        card.setOpaque(true);
+        card.setBorder(new EmptyBorder(25, 20, 20, 20));
+
+        card.setPreferredSize(new Dimension(320, 310));
+        card.setMinimumSize(new Dimension(320, 310));
+        card.setMaximumSize(new Dimension(320, 310));
+
+        // Employee information
+        JPanel detailsPanel = new JPanel(
+                new GridBagLayout()
+        );
+        detailsPanel.setBackground(LIGHT_PINK);
+        detailsPanel.setOpaque(true);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.weightx = 1;
+        gbc.insets = new Insets(0, 0, 10, 0);
+
+        JLabel nameLabel = new JLabel(
+                employee.name,
+                SwingConstants.CENTER
+        );
+        nameLabel.setFont(new Font("Serif", Font.BOLD, 25));
+        nameLabel.setForeground(DARK_PINK);
+
+        gbc.gridy = 0;
+        detailsPanel.add(nameLabel, gbc);
+
+        JLabel specialtyLabel = new JLabel(
+                employee.specialty,
+                SwingConstants.CENTER
+        );
+        specialtyLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        specialtyLabel.setForeground(TEXT_COLOR);
+
+        gbc.gridy = 1;
+        detailsPanel.add(specialtyLabel, gbc);
+
+        JLabel ratingLabel = new JLabel(
+                "★ " + employee.rating + "  (" +
+                employee.reviews + " reviews)",
+                SwingConstants.CENTER
+        );
+        ratingLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
+        ratingLabel.setForeground(DARK_PINK);
+
+        gbc.gridy = 2;
+        gbc.insets = new Insets(5, 0, 15, 0);
+        detailsPanel.add(ratingLabel, gbc);
+
+        JLabel descriptionLabel = new JLabel(
+                "<html><div style='text-align:center; width:230px;'>"
+                + employee.description
+                + "</div></html>",
+                SwingConstants.CENTER
+        );
+        descriptionLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
+        descriptionLabel.setForeground(TEXT_COLOR);
+
+        gbc.gridy = 3;
+        gbc.insets = new Insets(0, 0, 0, 0);
+        detailsPanel.add(descriptionLabel, gbc);
+
+        // Choose Employee button
+        JButton chooseButton = new JButton("Choose Employee");
+        chooseButton.setFont(new Font("SansSerif", Font.BOLD, 14));
+        chooseButton.setForeground(Color.WHITE);
+        chooseButton.setBackground(DARK_PINK);
+        chooseButton.setOpaque(true);
+        chooseButton.setFocusPainted(false);
+        chooseButton.setBorder(new EmptyBorder(12, 20, 12, 20));
+        chooseButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        chooseButton.addActionListener(e -> {
+            new AppointmentBooking(
+                    serviceName,
+                    employee.name
+            ).setVisible(true);
+
+            dispose();
+        });
+
+        JPanel buttonPanel = new JPanel(
+                new FlowLayout(FlowLayout.CENTER)
+        );
+        buttonPanel.setBackground(LIGHT_PINK);
+        buttonPanel.setOpaque(true);
+        buttonPanel.add(chooseButton);
+
+        card.add(detailsPanel, BorderLayout.CENTER);
+        card.add(buttonPanel, BorderLayout.SOUTH);
+
+        return card;
+    }
+
+    private ArrayList<Employee> getEmployees() {
+
+        ArrayList<Employee> employees = new ArrayList<>();
+
+        switch (category) {
+
+            case "Hair Care":
+                employees.add(new Employee(
+                        "Sarah", "Hair Specialist",
+                        4.9, 120,
+                        "Professional hair styling and treatments."
+                ));
+                employees.add(new Employee(
+                        "Nora", "Hair Stylist",
+                        4.8, 95,
+                        "Specialized in modern hair styles."
+                ));
+                break;
+
+            case "Skincare":
+                employees.add(new Employee(
+                        "Lama", "Skincare Specialist",
+                        4.9, 110,
+                        "Experienced in facial and skincare treatments."
+                ));
+                employees.add(new Employee(
+                        "Maya", "Beauty Specialist",
+                        4.8, 87,
+                        "Focused on skin care and hydration."
+                ));
+                break;
+
+            case "Makeup":
+                employees.add(new Employee(
+                        "Reem", "Makeup Artist",
+                        4.9, 135,
+                        "Professional makeup for every occasion."
+                ));
+                employees.add(new Employee(
+                        "Hala", "Makeup Artist",
+                        4.8, 102,
+                        "Specialized in elegant makeup looks."
+                ));
+                break;
+
+            case "Nails":
+                employees.add(new Employee(
+                        "Dana", "Nail Technician",
+                        4.9, 98,
+                        "Professional manicure and nail art."
+                ));
+                employees.add(new Employee(
+                        "Joud", "Nail Technician",
+                        4.8, 90,
+                        "Specialized in nail care and designs."
+                ));
+                break;
+        }
+
+        return employees;
+    }
+
+    private static class Employee {
+
         String name;
         String specialty;
         double rating;
         int reviews;
         String description;
 
-        Employee(String name, String specialty,
-                 double rating, int reviews, String description) {
+        Employee(
+                String name,
+                String specialty,
+                double rating,
+                int reviews,
+                String description
+        ) {
             this.name = name;
             this.specialty = specialty;
             this.rating = rating;
             this.reviews = reviews;
             this.description = description;
         }
-    }
-
-    public Employees(String serviceName, String category) {
-        this.serviceName = serviceName;
-        this.category = category;
-
-        setTitle("Glam & Go - Choose Employee");
-        setSize(1100, 750);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
-        buildPage();
-    }
-
-    private void buildPage() {
-        JPanel main = new JPanel(new BorderLayout());
-        main.setBackground(LIGHT);
-
-        JPanel header = new JPanel();
-        header.setBackground(Color.WHITE);
-        header.setBorder(new EmptyBorder(25, 30, 25, 30));
-        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
-
-        JLabel title = new JLabel("Choose Your Specialist");
-        title.setFont(new Font("Serif", Font.BOLD, 34));
-        title.setForeground(DARK);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel subtitle = new JLabel(
-                "Select an employee for " + serviceName
-        );
-        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 15));
-        subtitle.setForeground(PINK);
-        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        header.add(title);
-        header.add(Box.createVerticalStrut(10));
-        header.add(subtitle);
-
-        employeesPanel = new JPanel(
-                new FlowLayout(FlowLayout.CENTER, 20, 25)
-        );
-        employeesPanel.setBackground(LIGHT);
-        employeesPanel.setBorder(new EmptyBorder(5, 20, 20, 20));
-
-        loadEmployees();
-
-        JScrollPane scrollPane = new JScrollPane(employeesPanel);
-        scrollPane.setBorder(null);
-        scrollPane.setBackground(LIGHT);
-        scrollPane.getViewport().setBackground(LIGHT);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-
-        main.add(header, BorderLayout.NORTH);
-        main.add(scrollPane, BorderLayout.CENTER);
-
-        setContentPane(main);
-    }
-
-    private void loadEmployees() {
-        ArrayList<Employee> employees = new ArrayList<>();
-
-        if (category.equalsIgnoreCase("Hair Care")) {
-            employees.add(new Employee(
-                    "Sarah", "Hair Specialist", 4.9, 120,
-                    "Experienced in hair styling and treatments."
-            ));
-            employees.add(new Employee(
-                    "Nora", "Hair Stylist", 4.8, 95,
-                    "Specializes in hair care and coloring."
-            ));
-        }
-
-        if (category.equalsIgnoreCase("Skincare")) {
-            employees.add(new Employee(
-                    "Lama", "Skincare Specialist", 4.9, 110,
-                    "Specializes in facial treatments."
-            ));
-            employees.add(new Employee(
-                    "Maya", "Beauty Therapist", 4.7, 85,
-                    "Experienced in deep cleansing."
-            ));
-        }
-
-        if (category.equalsIgnoreCase("Makeup")) {
-            employees.add(new Employee(
-                    "Reem", "Makeup Artist", 5.0, 140,
-                    "Specializes in classic and evening makeup."
-            ));
-            employees.add(new Employee(
-                    "Hala", "Professional Makeup Artist", 4.8, 100,
-                    "Creates elegant makeup looks."
-            ));
-        }
-
-        if (category.equalsIgnoreCase("Nails")) {
-            employees.add(new Employee(
-                    "Dana", "Nail Technician", 4.9, 90,
-                    "Specializes in manicure and nail art."
-            ));
-            employees.add(new Employee(
-                    "Joud", "Nail Specialist", 4.8, 75,
-                    "Experienced in nail care."
-            ));
-        }
-
-        for (Employee employee : employees) {
-            employeesPanel.add(createEmployeeCard(employee));
-        }
-    }
-
-    private JPanel createEmployeeCard(Employee employee) {
-        JPanel card = new JPanel();
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBackground(Color.WHITE);
-
-        card.setPreferredSize(new Dimension(320, 255));
-        card.setMinimumSize(new Dimension(320, 255));
-        card.setMaximumSize(new Dimension(320, 255));
-
-        card.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(
-                        new Color(240, 220, 228), 1
-                ),
-                new EmptyBorder(20, 15, 20, 15)
-        ));
-
-        JLabel name = new JLabel(employee.name);
-        name.setFont(new Font("Serif", Font.BOLD, 24));
-        name.setForeground(DARK);
-        name.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel specialty = new JLabel(employee.specialty);
-        specialty.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        specialty.setForeground(PINK);
-        specialty.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel rating = new JLabel(
-                "★ " + employee.rating + "  (" +
-                employee.reviews + " reviews)"
-        );
-        rating.setFont(new Font("SansSerif", Font.BOLD, 14));
-        rating.setForeground(new Color(190, 140, 65));
-        rating.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JLabel description = new JLabel(
-                "<html><div style='text-align:center;width:250px;'>"
-                + employee.description + "</div></html>"
-        );
-        description.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        description.setForeground(DARK);
-        description.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        JButton chooseButton = new JButton("Choose Employee");
-        chooseButton.setFont(new Font("SansSerif", Font.BOLD, 13));
-        chooseButton.setForeground(Color.WHITE);
-        chooseButton.setBackground(PINK);
-        chooseButton.setFocusPainted(false);
-        chooseButton.setBorder(new EmptyBorder(12, 20, 12, 20));
-        chooseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        chooseButton.addActionListener(e -> {
-            JOptionPane.showMessageDialog(
-                    this,
-                    "You selected " + employee.name
-                            + "\nService: " + serviceName,
-                    "Employee Selected",
-                    JOptionPane.INFORMATION_MESSAGE
-            );
-        });
-
-        card.add(name);
-        card.add(Box.createVerticalStrut(8));
-        card.add(specialty);
-        card.add(Box.createVerticalStrut(15));
-        card.add(rating);
-        card.add(Box.createVerticalStrut(15));
-        card.add(description);
-        card.add(Box.createVerticalStrut(20));
-        card.add(chooseButton);
-
-        return card;
     }
 }

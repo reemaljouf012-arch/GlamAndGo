@@ -27,7 +27,10 @@ public class Services extends JFrame {
     }
 
     private final List<SalonService> allServices = new ArrayList<>();
-    private final JPanel cardsPanel = new JPanel(new GridLayout(0, 3, 22, 25));
+
+    private final JPanel cardsPanel =
+            new JPanel(new GridLayout(0, 3, 22, 25));
+
     private final JPanel categoriesPanel =
             new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 8));
 
@@ -51,9 +54,11 @@ public class Services extends JFrame {
         body.add(buildServicesSection());
         body.add(footer(this::navigate));
 
-        JScrollPane scroll = new JScrollPane(body,
+        JScrollPane scroll = new JScrollPane(
+                body,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
-                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+        );
 
         scroll.setBorder(null);
         scroll.getVerticalScrollBar().setUnitIncrement(24);
@@ -64,6 +69,7 @@ public class Services extends JFrame {
     }
 
     private void loadServices() {
+
         allServices.add(new SalonService(
                 "Hair Styling", "Hair Care",
                 "Professional styling for your perfect look.", 120));
@@ -110,6 +116,7 @@ public class Services extends JFrame {
     }
 
     private JComponent buildHero() {
+
         JPanel hero = new JPanel();
         hero.setLayout(new BoxLayout(hero, BoxLayout.Y_AXIS));
         hero.setBackground(PINK_50);
@@ -138,6 +145,7 @@ public class Services extends JFrame {
     }
 
     private JComponent buildCategories() {
+
         JPanel section = new JPanel();
         section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
         section.setBackground(Color.WHITE);
@@ -148,6 +156,7 @@ public class Services extends JFrame {
                 heading(30),
                 PINK_900
         );
+
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         categoriesPanel.setOpaque(false);
@@ -157,6 +166,7 @@ public class Services extends JFrame {
         };
 
         for (String category : categories) {
+
             PillButton button = new PillButton(
                     category, 15, 20, 9
             );
@@ -179,7 +189,9 @@ public class Services extends JFrame {
         return section;
     }
 
-    private void styleCategoryButton(PillButton button, String category) {
+    private void styleCategoryButton(
+            PillButton button, String category) {
+
         boolean selected = category.equals(selectedCategory);
 
         if (selected) {
@@ -190,7 +202,9 @@ public class Services extends JFrame {
     }
 
     private void updateCategoryButtons() {
+
         for (Component component : categoriesPanel.getComponents()) {
+
             if (component instanceof PillButton) {
                 PillButton button = (PillButton) component;
                 styleCategoryButton(button, button.getText());
@@ -199,6 +213,7 @@ public class Services extends JFrame {
     }
 
     private JComponent buildServicesSection() {
+
         JPanel section = new JPanel(new BorderLayout());
         section.setBackground(Color.WHITE);
         section.setBorder(new EmptyBorder(20, 55, 55, 55));
@@ -211,11 +226,13 @@ public class Services extends JFrame {
     }
 
     private void refreshServices() {
+
         cardsPanel.removeAll();
 
         int count = 0;
 
         for (SalonService service : allServices) {
+
             if (!selectedCategory.equals("All")
                     && !selectedCategory.equals(service.category)) {
                 continue;
@@ -226,8 +243,10 @@ public class Services extends JFrame {
         }
 
         while (count < 3) {
+
             JPanel empty = new JPanel();
             empty.setOpaque(false);
+
             cardsPanel.add(empty);
             count++;
         }
@@ -237,6 +256,7 @@ public class Services extends JFrame {
     }
 
     private JPanel buildServiceCard(SalonService service) {
+
         RoundedPanel card = new RoundedPanel(22, PINK_50, true);
 
         card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
@@ -264,8 +284,13 @@ public class Services extends JFrame {
         description.setRows(2);
 
         JLabel price = new JLabel(
-                String.format(java.util.Locale.US, "SAR %.2f", service.price)
+                String.format(
+                        java.util.Locale.US,
+                        "SAR %.2f",
+                        service.price
+                )
         );
+
         price.setFont(new Font("Serif", Font.PLAIN, 22));
         price.setForeground(PINK_800);
 
@@ -275,6 +300,7 @@ public class Services extends JFrame {
 
         bookButton.style(PINK_800, Color.WHITE, null, PINK_900);
 
+        // Open employee selection page
         bookButton.addActionListener(e -> {
             new Employees(service.name, service.category).setVisible(true);
             dispose();
@@ -300,7 +326,9 @@ public class Services extends JFrame {
     }
 
     private void navigate(String page) {
+
         switch (page) {
+
             case "Home":
                 new Home().setVisible(true);
                 dispose();
@@ -325,6 +353,7 @@ public class Services extends JFrame {
     }
 
     public static void main(String[] args) {
+
         SwingUtilities.invokeLater(() ->
                 new Services().setVisible(true)
         );

@@ -1,3 +1,4 @@
+
 package glamandgo;
 
 import java.awt.*;
@@ -21,18 +22,32 @@ public class Products extends JFrame {
     };
 
     private static final String[] SORTS = {
-        "Best seller", "Price low to high", "Price high to low", "Rating"
+        "Best seller", "Price low to high",
+        "Price high to low", "Rating"
     };
 
     private final List<JCheckBox> categoryBoxes = new ArrayList<>();
-    private final JSlider priceSlider = new JSlider(MIN_PRICE, MAX_PRICE, MAX_PRICE);
-    private final JLabel priceValue = label("", text(14), PINK_800);
-    private final JCheckBox inStockOnly = checkBox("In stock only");
-    private final JComboBox<String> sortBox = new JComboBox<>(SORTS);
 
-    private final JLabel counter = label("", text(17), PINK_800);
-    private final JPanel grid = new JPanel(new GridLayout(0, 4, 16, 36));
-    private final JPanel pager = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
+    private final JSlider priceSlider =
+            new JSlider(MIN_PRICE, MAX_PRICE, MAX_PRICE);
+
+    private final JLabel priceValue =
+            label("", text(14), PINK_800);
+
+    private final JCheckBox inStockOnly =
+            checkBox("In stock only");
+
+    private final JComboBox<String> sortBox =
+            new JComboBox<>(SORTS);
+
+    private final JLabel counter =
+            label("", text(17), PINK_800);
+
+    private final JPanel grid =
+            new JPanel(new GridLayout(0, 4, 16, 36));
+
+    private final JPanel pager =
+            new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
 
     private final JScrollPane scroll;
     private int currentPage = 1;
@@ -75,14 +90,21 @@ public class Products extends JFrame {
                 dispose();
                 break;
 
+            case "Services":
+                new Services().setVisible(true);
+                dispose();
+                break;
+
             case "Products":
                 scroll.getVerticalScrollBar().setValue(0);
                 break;
 
             default:
-                JOptionPane.showMessageDialog(this,
+                JOptionPane.showMessageDialog(
+                        this,
                         "\"" + page + "\" page is not connected yet.",
-                        "Glam & Go", JOptionPane.INFORMATION_MESSAGE);
+                        "Glam & Go",
+                        JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -103,6 +125,7 @@ public class Products extends JFrame {
         }
 
         side.add(Box.createVerticalStrut(24));
+
         addLeft(side, label("Price", heading(20), PINK_900), 10);
 
         priceSlider.setOpaque(false);
@@ -114,6 +137,7 @@ public class Products extends JFrame {
         addLeft(side, priceValue, 0);
 
         side.add(Box.createVerticalStrut(28));
+
         addLeft(side, label("Availability", heading(20), PINK_900), 12);
 
         inStockOnly.addActionListener(e -> filtersChanged());
@@ -123,9 +147,13 @@ public class Products extends JFrame {
         return side;
     }
 
-    private static void addLeft(JPanel parent, JComponent component, int gap) {
+    private static void addLeft(
+            JPanel parent, JComponent component, int gap) {
+
         component.setAlignmentX(Component.LEFT_ALIGNMENT);
-        component.setMaximumSize(new Dimension(188, component.getPreferredSize().height));
+        component.setMaximumSize(new Dimension(
+                188, component.getPreferredSize().height));
+
         parent.add(component);
 
         if (gap > 0) {
@@ -140,7 +168,9 @@ public class Products extends JFrame {
         box.setOpaque(false);
         box.setIconTextGap(10);
         box.setIcon(new CheckIcon());
-        box.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        box.setCursor(Cursor.getPredefinedCursor(
+                Cursor.HAND_CURSOR));
+
         return box;
     }
 
@@ -149,8 +179,10 @@ public class Products extends JFrame {
         top.setOpaque(false);
         top.add(counter, BorderLayout.WEST);
 
-        JPanel sortRow = new JPanel(new FlowLayout(FlowLayout.RIGHT, 8, 0));
+        JPanel sortRow = new JPanel(
+                new FlowLayout(FlowLayout.RIGHT, 8, 0));
         sortRow.setOpaque(false);
+
         sortRow.add(label("Sort by:", text(16), PINK_800));
 
         sortBox.setFont(text(15));
@@ -168,7 +200,8 @@ public class Products extends JFrame {
         gridHolder.setOpaque(false);
         gridHolder.add(grid, BorderLayout.NORTH);
 
-        JPanel results = new JPanel(new BorderLayout(0, 24));
+        JPanel results = new JPanel(
+                new BorderLayout(0, 24));
         results.setOpaque(false);
         results.setBorder(new EmptyBorder(24, 24, 44, 24));
 
@@ -205,7 +238,8 @@ public class Products extends JFrame {
                 continue;
             }
 
-            if (inStockOnly.isSelected() && product.quantity <= 0) {
+            if (inStockOnly.isSelected()
+                    && product.quantity <= 0) {
                 continue;
             }
 
@@ -216,19 +250,23 @@ public class Products extends JFrame {
 
         switch (sortBox.getSelectedIndex()) {
             case 1:
-                order = Comparator.comparingDouble(p -> p.price);
+                order = Comparator.comparingDouble(
+                        p -> p.price);
                 break;
 
             case 2:
-                order = Comparator.<Product>comparingDouble(p -> p.price).reversed();
+                order = Comparator.<Product>comparingDouble(
+                        p -> p.price).reversed();
                 break;
 
             case 3:
-                order = Comparator.<Product>comparingDouble(p -> p.rating).reversed();
+                order = Comparator.<Product>comparingDouble(
+                        p -> p.rating).reversed();
                 break;
 
             default:
-                order = Comparator.<Product>comparingInt(p -> p.salesCount).reversed();
+                order = Comparator.<Product>comparingInt(
+                        p -> p.salesCount).reversed();
         }
 
         found.sort(order);
@@ -238,30 +276,34 @@ public class Products extends JFrame {
     private void refresh() {
         List<Product> found = filteredProducts();
 
-        int totalPages = Math.max(1, (found.size() + PAGE_SIZE - 1) / PAGE_SIZE);
+        int totalPages = Math.max(
+                1, (found.size() + PAGE_SIZE - 1) / PAGE_SIZE);
+
         currentPage = Math.min(currentPage, totalPages);
 
         int from = (currentPage - 1) * PAGE_SIZE;
         int to = Math.min(from + PAGE_SIZE, found.size());
 
-        priceValue.setText("SAR " + MIN_PRICE + " - " + priceSlider.getValue());
+        priceValue.setText(
+                "SAR " + MIN_PRICE + " - " + priceSlider.getValue());
 
         if (found.isEmpty()) {
             counter.setText("No products match your filters");
         } else {
-            counter.setText("Showing " + (to - from) + " of " + found.size());
+            counter.setText(
+                    "Showing " + (to - from) + " of " + found.size());
         }
 
         grid.removeAll();
 
         for (Product product : found.subList(from, to)) {
             grid.add(productCard(product, () -> {
-                ProductDetails details = new ProductDetails(this, product);
+                ProductDetails details =
+                        new ProductDetails(this, product);
                 details.setVisible(true);
             }));
         }
 
-        // Keep the card width consistent when fewer than four products match.
         for (int i = to - from; i < 4; i++) {
             JPanel filler = new JPanel();
             filler.setOpaque(false);
@@ -280,17 +322,26 @@ public class Products extends JFrame {
             return;
         }
 
-        pager.add(pageButton("<", currentPage - 1, currentPage > 1, false));
+        pager.add(pageButton(
+                "<", currentPage - 1, currentPage > 1, false));
 
         for (int page = 1; page <= totalPages; page++) {
-            pager.add(pageButton(String.valueOf(page), page, true, page == currentPage));
+            pager.add(pageButton(
+                    String.valueOf(page),
+                    page, true, page == currentPage));
         }
 
-        pager.add(pageButton(">", currentPage + 1, currentPage < totalPages, false));
+        pager.add(pageButton(
+                ">", currentPage + 1,
+                currentPage < totalPages, false));
     }
 
-    private PillButton pageButton(String title, int target, boolean enabled, boolean active) {
-        PillButton button = new PillButton(title, 15, 0, 0) {
+    private PillButton pageButton(
+            String title, int target,
+            boolean enabled, boolean active) {
+
+        PillButton button = new PillButton(
+                title, 15, 0, 0) {
             @Override
             public Dimension getPreferredSize() {
                 return new Dimension(42, 42);
@@ -314,7 +365,9 @@ public class Products extends JFrame {
         button.addActionListener(e -> {
             currentPage = target;
             refresh();
-            SwingUtilities.invokeLater(() -> scroll.getVerticalScrollBar().setValue(0));
+
+            SwingUtilities.invokeLater(
+                    () -> scroll.getVerticalScrollBar().setValue(0));
         });
 
         return button;
@@ -333,12 +386,18 @@ public class Products extends JFrame {
         }
 
         @Override
-        public void paintIcon(Component component, Graphics graphics, int x, int y) {
+        public void paintIcon(
+                Component component, Graphics graphics,
+                int x, int y) {
+
             Graphics2D g = (Graphics2D) graphics.create();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+
+            g.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
-            boolean selected = ((JCheckBox) component).isSelected();
+            boolean selected =
+                    ((JCheckBox) component).isSelected();
 
             g.setColor(selected ? PINK_800 : Color.WHITE);
             g.fillRoundRect(x, y, 16, 16, 5, 5);
@@ -366,7 +425,9 @@ public class Products extends JFrame {
         @Override
         public void paintTrack(Graphics graphics) {
             Graphics2D g = (Graphics2D) graphics.create();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+
+            g.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
             int x = trackRect.x;
@@ -374,10 +435,12 @@ public class Products extends JFrame {
             int thumbCenter = thumbRect.x + thumbRect.width / 2;
 
             g.setColor(PINK_200);
-            g.fillRoundRect(x, y, trackRect.width, 5, 5, 5);
+            g.fillRoundRect(
+                    x, y, trackRect.width, 5, 5, 5);
 
             g.setColor(PINK_800);
-            g.fillRoundRect(x, y, Math.max(0, thumbCenter - x), 5, 5, 5);
+            g.fillRoundRect(
+                    x, y, Math.max(0, thumbCenter - x), 5, 5, 5);
 
             g.dispose();
         }
@@ -385,7 +448,9 @@ public class Products extends JFrame {
         @Override
         public void paintThumb(Graphics graphics) {
             Graphics2D g = (Graphics2D) graphics.create();
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+
+            g.setRenderingHint(
+                    RenderingHints.KEY_ANTIALIASING,
                     RenderingHints.VALUE_ANTIALIAS_ON);
 
             int size = 15;
@@ -394,11 +459,13 @@ public class Products extends JFrame {
 
             g.setColor(PINK_800);
             g.fillOval(x, y, size, size);
+
             g.dispose();
         }
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Products().setVisible(true));
+        SwingUtilities.invokeLater(
+                () -> new Products().setVisible(true));
     }
 }

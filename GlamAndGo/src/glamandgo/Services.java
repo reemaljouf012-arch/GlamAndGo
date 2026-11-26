@@ -12,6 +12,7 @@ import static glamandgo.Theme.*;
 public class Services extends JFrame {
 
     private static class SalonService {
+
         String name;
         String category;
         String description;
@@ -19,6 +20,7 @@ public class Services extends JFrame {
 
         SalonService(String name, String category,
                      String description, double price) {
+
             this.name = name;
             this.category = category;
             this.description = description;
@@ -26,22 +28,32 @@ public class Services extends JFrame {
         }
     }
 
-    private final List<SalonService> allServices = new ArrayList<>();
+    private final List<SalonService> allServices =
+            new ArrayList<>();
 
     private final JPanel cardsPanel =
             new JPanel(new GridLayout(0, 3, 22, 25));
 
     private final JPanel categoriesPanel =
-            new JPanel(new FlowLayout(FlowLayout.CENTER, 12, 8));
+            new JPanel(new FlowLayout(
+                    FlowLayout.CENTER, 12, 8));
 
     private String selectedCategory = "All";
 
+    // ===================== Constructor =====================
+
     public Services() {
+
         setTitle("Glam & Go | Services");
+
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
         setSize(1280, 820);
+
         setMinimumSize(new Dimension(1100, 650));
+
         setLocationRelativeTo(null);
+
         setLayout(new BorderLayout());
 
         loadServices();
@@ -49,9 +61,13 @@ public class Services extends JFrame {
         add(navbar(this::navigate), BorderLayout.NORTH);
 
         PageBody body = new PageBody();
+
         body.add(buildHero());
+
         body.add(buildCategories());
+
         body.add(buildServicesSection());
+
         body.add(footer(this::navigate));
 
         JScrollPane scroll = new JScrollPane(
@@ -61,6 +77,7 @@ public class Services extends JFrame {
         );
 
         scroll.setBorder(null);
+
         scroll.getVerticalScrollBar().setUnitIncrement(24);
 
         add(scroll, BorderLayout.CENTER);
@@ -68,59 +85,101 @@ public class Services extends JFrame {
         refreshServices();
     }
 
+    // ===================== Services Data =====================
+
     private void loadServices() {
 
         allServices.add(new SalonService(
-                "Hair Styling", "Hair Care",
-                "Professional styling for your perfect look.", 120));
+                "Hair Styling",
+                "Hair Care",
+                "Professional styling for your perfect look.",
+                120
+        ));
 
         allServices.add(new SalonService(
-                "Hair Treatment", "Hair Care",
-                "Nourishing treatments for healthy hair.", 180));
+                "Hair Treatment",
+                "Hair Care",
+                "Nourishing treatments for healthy hair.",
+                180
+        ));
 
         allServices.add(new SalonService(
-                "Hair Coloring", "Hair Care",
-                "Refresh your look with beautiful colors.", 250));
+                "Hair Coloring",
+                "Hair Care",
+                "Refresh your look with beautiful colors.",
+                250
+        ));
 
         allServices.add(new SalonService(
-                "Facial Treatment", "Skincare",
-                "A relaxing treatment for glowing skin.", 150));
+                "Facial Treatment",
+                "Skincare",
+                "A relaxing treatment for glowing skin.",
+                150
+        ));
 
         allServices.add(new SalonService(
-                "Deep Cleansing", "Skincare",
-                "Deep cleansing for fresh and clean skin.", 130));
+                "Deep Cleansing",
+                "Skincare",
+                "Deep cleansing for fresh and clean skin.",
+                130
+        ));
 
         allServices.add(new SalonService(
-                "Skin Hydration", "Skincare",
-                "Restore moisture and softness to your skin.", 170));
+                "Skin Hydration",
+                "Skincare",
+                "Restore moisture and softness to your skin.",
+                170
+        ));
 
         allServices.add(new SalonService(
-                "Classic Makeup", "Makeup",
-                "Elegant makeup for your special occasions.", 200));
+                "Classic Makeup",
+                "Makeup",
+                "Elegant makeup for your special occasions.",
+                200
+        ));
 
         allServices.add(new SalonService(
-                "Evening Makeup", "Makeup",
-                "A glamorous look for unforgettable nights.", 280));
+                "Evening Makeup",
+                "Makeup",
+                "A glamorous look for unforgettable nights.",
+                280
+        ));
 
         allServices.add(new SalonService(
-                "Manicure", "Nails",
-                "Beautifully shaped and polished nails.", 90));
+                "Manicure",
+                "Nails",
+                "Beautifully shaped and polished nails.",
+                90
+        ));
 
         allServices.add(new SalonService(
-                "Pedicure", "Nails",
-                "Relaxing care for soft and beautiful feet.", 110));
+                "Pedicure",
+                "Nails",
+                "Relaxing care for soft and beautiful feet.",
+                110
+        ));
 
         allServices.add(new SalonService(
-                "Nail Art", "Nails",
-                "Creative nail designs made just for you.", 140));
+                "Nail Art",
+                "Nails",
+                "Creative nail designs made just for you.",
+                140
+        ));
     }
+
+    // ===================== Hero =====================
 
     private JComponent buildHero() {
 
         JPanel hero = new JPanel();
-        hero.setLayout(new BoxLayout(hero, BoxLayout.Y_AXIS));
+
+        hero.setLayout(
+                new BoxLayout(hero, BoxLayout.Y_AXIS));
+
         hero.setBackground(PINK_50);
-        hero.setBorder(new EmptyBorder(65, 20, 65, 20));
+
+        hero.setBorder(
+                new EmptyBorder(65, 20, 65, 20));
 
         JLabel title = label(
                 "Our Beauty Services",
@@ -134,22 +193,34 @@ public class Services extends JFrame {
                 PINK_800
         );
 
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
+
+        subtitle.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
 
         hero.add(title);
+
         hero.add(Box.createVerticalStrut(15));
+
         hero.add(subtitle);
 
         return hero;
     }
 
+    // ===================== Categories =====================
+
     private JComponent buildCategories() {
 
         JPanel section = new JPanel();
-        section.setLayout(new BoxLayout(section, BoxLayout.Y_AXIS));
+
+        section.setLayout(
+                new BoxLayout(section, BoxLayout.Y_AXIS));
+
         section.setBackground(Color.WHITE);
-        section.setBorder(new EmptyBorder(30, 20, 20, 20));
+
+        section.setBorder(
+                new EmptyBorder(30, 20, 20, 20));
 
         JLabel title = label(
                 "Explore Our Services",
@@ -157,12 +228,17 @@ public class Services extends JFrame {
                 PINK_900
         );
 
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        title.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
 
         categoriesPanel.setOpaque(false);
 
         String[] categories = {
-            "All", "Hair Care", "Skincare", "Makeup", "Nails"
+            "All",
+            "Hair Care",
+            "Skincare",
+            "Makeup",
+            "Nails"
         };
 
         for (String category : categories) {
@@ -174,8 +250,11 @@ public class Services extends JFrame {
             styleCategoryButton(button, category);
 
             button.addActionListener(e -> {
+
                 selectedCategory = category;
+
                 updateCategoryButtons();
+
                 refreshServices();
             });
 
@@ -183,47 +262,84 @@ public class Services extends JFrame {
         }
 
         section.add(title);
+
         section.add(Box.createVerticalStrut(20));
+
         section.add(categoriesPanel);
 
         return section;
     }
 
-    private void styleCategoryButton(
-            PillButton button, String category) {
+    // ===================== Category Style =====================
 
-        boolean selected = category.equals(selectedCategory);
+    private void styleCategoryButton(
+            PillButton button,
+            String category) {
+
+        boolean selected =
+                category.equals(selectedCategory);
 
         if (selected) {
-            button.style(PINK_800, Color.WHITE, null, PINK_900);
+
+            button.style(
+                    PINK_800,
+                    Color.WHITE,
+                    null,
+                    PINK_900
+            );
+
         } else {
-            button.style(Color.WHITE, PINK_800, PINK_300, PINK_50);
+
+            button.style(
+                    Color.WHITE,
+                    PINK_800,
+                    PINK_300,
+                    PINK_50
+            );
         }
     }
 
     private void updateCategoryButtons() {
 
-        for (Component component : categoriesPanel.getComponents()) {
+        for (Component component
+                : categoriesPanel.getComponents()) {
 
             if (component instanceof PillButton) {
-                PillButton button = (PillButton) component;
-                styleCategoryButton(button, button.getText());
+
+                PillButton button =
+                        (PillButton) component;
+
+                styleCategoryButton(
+                        button,
+                        button.getText()
+                );
             }
         }
     }
 
+    // ===================== Services Section =====================
+
     private JComponent buildServicesSection() {
 
-        JPanel section = new JPanel(new BorderLayout());
+        JPanel section = new JPanel(
+                new BorderLayout());
+
         section.setBackground(Color.WHITE);
-        section.setBorder(new EmptyBorder(20, 55, 55, 55));
+
+        section.setBorder(
+                new EmptyBorder(20, 55, 55, 55));
 
         cardsPanel.setOpaque(false);
 
-        section.add(cardsPanel, BorderLayout.CENTER);
+        section.add(
+                cardsPanel,
+                BorderLayout.CENTER
+        );
 
         return section;
     }
+
+    // ===================== Filter Services =====================
 
     private void refreshServices() {
 
@@ -234,33 +350,50 @@ public class Services extends JFrame {
         for (SalonService service : allServices) {
 
             if (!selectedCategory.equals("All")
-                    && !selectedCategory.equals(service.category)) {
+                    && !selectedCategory.equals(
+                            service.category)) {
+
                 continue;
             }
 
-            cardsPanel.add(buildServiceCard(service));
+            cardsPanel.add(
+                    buildServiceCard(service));
+
             count++;
         }
 
         while (count < 3) {
 
             JPanel empty = new JPanel();
+
             empty.setOpaque(false);
 
             cardsPanel.add(empty);
+
             count++;
         }
 
         cardsPanel.revalidate();
+
         cardsPanel.repaint();
     }
 
-    private JPanel buildServiceCard(SalonService service) {
+    // ===================== Service Card =====================
 
-        RoundedPanel card = new RoundedPanel(22, PINK_50, true);
+    private JPanel buildServiceCard(
+            SalonService service) {
 
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBorder(new EmptyBorder(22, 20, 22, 20));
+        RoundedPanel card = new RoundedPanel(
+                22,
+                PINK_50,
+                true
+        );
+
+        card.setLayout(
+                new BoxLayout(card, BoxLayout.Y_AXIS));
+
+        card.setBorder(
+                new EmptyBorder(22, 20, 22, 20));
 
         JLabel category = label(
                 service.category.toUpperCase(),
@@ -274,13 +407,21 @@ public class Services extends JFrame {
                 PINK_950
         );
 
-        JTextArea description = new JTextArea(service.description);
+        JTextArea description =
+                new JTextArea(service.description);
+
         description.setFont(text(15));
+
         description.setForeground(PINK_800);
+
         description.setLineWrap(true);
+
         description.setWrapStyleWord(true);
+
         description.setEditable(false);
+
         description.setOpaque(false);
+
         description.setRows(2);
 
         JLabel price = new JLabel(
@@ -291,71 +432,127 @@ public class Services extends JFrame {
                 )
         );
 
-        price.setFont(new Font("Serif", Font.PLAIN, 22));
+        price.setFont(
+                new Font("Serif", Font.PLAIN, 22));
+
         price.setForeground(PINK_800);
 
         PillButton bookButton = new PillButton(
-                "Book Now", 15, 20, 9
+                "Book Now",
+                15,
+                20,
+                9
         );
 
-        bookButton.style(PINK_800, Color.WHITE, null, PINK_900);
+        bookButton.style(
+                PINK_800,
+                Color.WHITE,
+                null,
+                PINK_900
+        );
 
         // Open employee selection page
+
         bookButton.addActionListener(e -> {
-            new Employees(service.name, service.category).setVisible(true);
+
+            new Employees(
+                    service.name,
+                    service.category
+            ).setVisible(true);
+
             dispose();
         });
 
         for (JComponent component : new JComponent[]{
-                category, name, description, price, bookButton
+                category,
+                name,
+                description,
+                price,
+                bookButton
         }) {
-            component.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+            component.setAlignmentX(
+                    Component.LEFT_ALIGNMENT);
         }
 
         card.add(category);
+
         card.add(Box.createVerticalStrut(12));
+
         card.add(name);
+
         card.add(Box.createVerticalStrut(10));
+
         card.add(description);
+
         card.add(Box.createVerticalStrut(18));
+
         card.add(price);
+
         card.add(Box.createVerticalStrut(15));
+
         card.add(bookButton);
 
         return card;
     }
+
+    // ===================== Navigation =====================
 
     private void navigate(String page) {
 
         switch (page) {
 
             case "Home":
+
                 new Home().setVisible(true);
+
                 dispose();
+
                 break;
 
             case "Services":
+
                 break;
 
             case "Products":
+
                 new Products().setVisible(true);
+
                 dispose();
+
+                break;
+
+            // Shopping Cart Navigation
+
+            case "Cart":
+            case "Shopping Cart":
+
+                new ShoppingCart().setVisible(true);
+
+                dispose();
+
                 break;
 
             default:
+
                 JOptionPane.showMessageDialog(
                         this,
-                        "\"" + page + "\" page is not connected yet.",
+                        "\"" + page
+                        + "\" page is not connected yet.",
                         "Glam & Go",
                         JOptionPane.INFORMATION_MESSAGE
                 );
         }
     }
 
+    // ===================== Main =====================
+
     public static void main(String[] args) {
 
         SwingUtilities.invokeLater(() ->
+
                 new Services().setVisible(true)
+
         );
     }
 }

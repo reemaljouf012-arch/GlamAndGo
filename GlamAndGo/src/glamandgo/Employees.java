@@ -54,9 +54,14 @@ public class Employees extends JFrame {
     private JComponent buildHero() {
 
         JPanel hero = new JPanel();
-        hero.setLayout(new BoxLayout(hero, BoxLayout.Y_AXIS));
+
+        hero.setLayout(
+                new BoxLayout(hero, BoxLayout.Y_AXIS));
+
         hero.setBackground(PINK_50);
-        hero.setBorder(new EmptyBorder(65, 20, 65, 20));
+
+        hero.setBorder(
+                new EmptyBorder(65, 20, 65, 20));
 
         JLabel title = label(
                 "Meet Our Beauty Experts",
@@ -84,13 +89,18 @@ public class Employees extends JFrame {
     private JComponent buildEmployeesSection() {
 
         JPanel section = new JPanel(new BorderLayout());
+
         section.setBackground(Color.WHITE);
-        section.setBorder(new EmptyBorder(35, 55, 55, 55));
+
+        section.setBorder(
+                new EmptyBorder(35, 55, 55, 55));
 
         JPanel headingPanel = new JPanel();
+
         headingPanel.setLayout(
                 new BoxLayout(headingPanel, BoxLayout.Y_AXIS)
         );
+
         headingPanel.setBackground(Color.WHITE);
 
         JLabel sectionTitle = label(
@@ -106,6 +116,7 @@ public class Employees extends JFrame {
         );
 
         sectionTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         sectionSubtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         headingPanel.add(sectionTitle);
@@ -116,6 +127,7 @@ public class Employees extends JFrame {
         employeesPanel.setOpaque(false);
 
         section.add(headingPanel, BorderLayout.NORTH);
+
         section.add(employeesPanel, BorderLayout.CENTER);
 
         return section;
@@ -129,20 +141,27 @@ public class Employees extends JFrame {
         ArrayList<Employee> employees = getEmployees();
 
         for (Employee employee : employees) {
-            employeesPanel.add(buildEmployeeCard(employee));
+
+            employeesPanel.add(
+                    buildEmployeeCard(employee));
         }
 
         employeesPanel.revalidate();
+
         employeesPanel.repaint();
     }
 
     // Employee Card
     private JPanel buildEmployeeCard(Employee employee) {
 
-        RoundedPanel card = new RoundedPanel(22, PINK_50, true);
+        RoundedPanel card = new RoundedPanel(
+                22, PINK_50, true);
 
-        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
-        card.setBorder(new EmptyBorder(30, 25, 30, 25));
+        card.setLayout(
+                new BoxLayout(card, BoxLayout.Y_AXIS));
+
+        card.setBorder(
+                new EmptyBorder(30, 25, 30, 25));
 
         JLabel name = label(
                 employee.name,
@@ -168,17 +187,27 @@ public class Employees extends JFrame {
         );
 
         description.setFont(text(15));
+
         description.setForeground(PINK_800);
+
         description.setLineWrap(true);
+
         description.setWrapStyleWord(true);
+
         description.setEditable(false);
+
         description.setFocusable(false);
+
         description.setOpaque(false);
+
         description.setRows(2);
 
         name.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         specialty.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         rating.setAlignmentX(Component.CENTER_ALIGNMENT);
+
         description.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Choose Employee Button
@@ -193,9 +222,10 @@ public class Employees extends JFrame {
                 PINK_900
         );
 
-        chooseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        chooseButton.setAlignmentX(
+                Component.CENTER_ALIGNMENT);
 
-        // Original booking action
+        // Open Appointment Booking
         chooseButton.addActionListener(e -> {
 
             new AppointmentBooking(
@@ -207,15 +237,19 @@ public class Employees extends JFrame {
         });
 
         card.add(name);
+
         card.add(Box.createVerticalStrut(12));
 
         card.add(specialty);
+
         card.add(Box.createVerticalStrut(18));
 
         card.add(rating);
+
         card.add(Box.createVerticalStrut(20));
 
         card.add(description);
+
         card.add(Box.createVerticalStrut(30));
 
         card.add(chooseButton);
@@ -233,14 +267,18 @@ public class Employees extends JFrame {
             case "Hair Care":
 
                 employees.add(new Employee(
-                        "Sarah", "Hair Specialist",
-                        4.9, 120,
+                        "Sarah",
+                        "Hair Specialist",
+                        4.9,
+                        120,
                         "Professional hair styling and treatments."
                 ));
 
                 employees.add(new Employee(
-                        "Nora", "Hair Stylist",
-                        4.8, 95,
+                        "Nora",
+                        "Hair Stylist",
+                        4.8,
+                        95,
                         "Specialized in modern hair styles."
                 ));
 
@@ -249,14 +287,18 @@ public class Employees extends JFrame {
             case "Skincare":
 
                 employees.add(new Employee(
-                        "Lama", "Skincare Specialist",
-                        4.9, 110,
+                        "Lama",
+                        "Skincare Specialist",
+                        4.9,
+                        110,
                         "Experienced in facial and skincare treatments."
                 ));
 
                 employees.add(new Employee(
-                        "Maya", "Beauty Specialist",
-                        4.8, 87,
+                        "Maya",
+                        "Beauty Specialist",
+                        4.8,
+                        87,
                         "Focused on skin care and hydration."
                 ));
 
@@ -265,14 +307,18 @@ public class Employees extends JFrame {
             case "Makeup":
 
                 employees.add(new Employee(
-                        "Reem", "Makeup Artist",
-                        4.9, 135,
+                        "Reem",
+                        "Makeup Artist",
+                        4.9,
+                        135,
                         "Professional makeup for every occasion."
                 ));
 
                 employees.add(new Employee(
-                        "Hala", "Makeup Artist",
-                        4.8, 102,
+                        "Hala",
+                        "Makeup Artist",
+                        4.8,
+                        102,
                         "Specialized in elegant makeup looks."
                 ));
 
@@ -281,14 +327,18 @@ public class Employees extends JFrame {
             case "Nails":
 
                 employees.add(new Employee(
-                        "Dana", "Nail Technician",
-                        4.9, 98,
+                        "Dana",
+                        "Nail Technician",
+                        4.9,
+                        98,
                         "Professional manicure and nail art."
                 ));
 
                 employees.add(new Employee(
-                        "Joud", "Nail Technician",
-                        4.8, 90,
+                        "Joud",
+                        "Nail Technician",
+                        4.8,
+                        90,
                         "Specialized in nail care and designs."
                 ));
 
@@ -306,6 +356,7 @@ public class Employees extends JFrame {
             case "Home":
 
                 new Home().setVisible(true);
+
                 dispose();
 
                 break;
@@ -313,6 +364,7 @@ public class Employees extends JFrame {
             case "Services":
 
                 new Services().setVisible(true);
+
                 dispose();
 
                 break;
@@ -320,6 +372,17 @@ public class Employees extends JFrame {
             case "Products":
 
                 new Products().setVisible(true);
+
+                dispose();
+
+                break;
+
+            // Shopping Cart Navigation
+            case "Cart":
+            case "Shopping Cart":
+
+                new ShoppingCart().setVisible(true);
+
                 dispose();
 
                 break;

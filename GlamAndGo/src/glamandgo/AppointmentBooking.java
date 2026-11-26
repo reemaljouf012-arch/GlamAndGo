@@ -261,6 +261,15 @@ public class AppointmentBooking extends JFrame {
 
                 break;
 
+            // Shopping Cart Navigation
+            case "Cart":
+            case "Shopping Cart":
+
+                new ShoppingCart().setVisible(true);
+                dispose();
+
+                break;
+
             default:
 
                 JOptionPane.showMessageDialog(

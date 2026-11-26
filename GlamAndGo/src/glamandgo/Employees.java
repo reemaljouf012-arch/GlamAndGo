@@ -1,169 +1,203 @@
 
 package glamandgo;
 
-import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.util.ArrayList;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+import static glamandgo.Theme.*;
 
 public class Employees extends JFrame {
 
     private final String serviceName;
     private final String category;
 
-    private final Color PINK = new Color(220, 145, 165);
-    private final Color DARK_PINK = new Color(170, 90, 115);
-    private final Color LIGHT_PINK = new Color(255, 245, 248);
-    private final Color TEXT_COLOR = new Color(65, 55, 60);
+    private final JPanel employeesPanel =
+            new JPanel(new GridLayout(1, 2, 22, 25));
 
     public Employees(String serviceName, String category) {
+
         this.serviceName = serviceName;
         this.category = category;
 
-        setTitle("Choose Employee - Glam & Go");
-        setSize(1000, 750);
+        setTitle("Glam & Go | Employees");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(1280, 820);
+        setMinimumSize(new Dimension(1100, 650));
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLayout(new BorderLayout());
 
-        buildPage();
+        add(navbar(this::navigate), BorderLayout.NORTH);
+
+        PageBody body = new PageBody();
+
+        body.add(buildHero());
+        body.add(buildEmployeesSection());
+        body.add(footer(this::navigate));
+
+        JScrollPane scroll = new JScrollPane(
+                body,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER
+        );
+
+        scroll.setBorder(null);
+        scroll.getVerticalScrollBar().setUnitIncrement(24);
+
+        add(scroll, BorderLayout.CENTER);
+
+        refreshEmployees();
     }
 
-    private void buildPage() {
+    // Hero Section
+    private JComponent buildHero() {
 
-        JPanel mainPanel = new JPanel(new BorderLayout());
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setBorder(new EmptyBorder(35, 40, 35, 40));
+        JPanel hero = new JPanel();
+        hero.setLayout(new BoxLayout(hero, BoxLayout.Y_AXIS));
+        hero.setBackground(PINK_50);
+        hero.setBorder(new EmptyBorder(65, 20, 65, 20));
 
-        JLabel title = new JLabel(
-                "Choose Your Employee",
-                SwingConstants.CENTER
+        JLabel title = label(
+                "Meet Our Beauty Experts",
+                heading(48),
+                PINK_950
         );
-        title.setFont(new Font("Serif", Font.BOLD, 34));
-        title.setForeground(DARK_PINK);
 
-        JLabel subtitle = new JLabel(
-                "Select an employee for " + serviceName,
-                SwingConstants.CENTER
+        JLabel subtitle = label(
+                "Choose the perfect employee for your beauty journey.",
+                text(18),
+                PINK_800
         );
-        subtitle.setFont(new Font("SansSerif", Font.PLAIN, 16));
-        subtitle.setForeground(TEXT_COLOR);
-
-        JPanel header = new JPanel();
-        header.setLayout(new BoxLayout(header, BoxLayout.Y_AXIS));
-        header.setBackground(Color.WHITE);
 
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         subtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        header.add(title);
-        header.add(Box.createVerticalStrut(12));
-        header.add(subtitle);
-        header.add(Box.createVerticalStrut(35));
+        hero.add(title);
+        hero.add(Box.createVerticalStrut(15));
+        hero.add(subtitle);
 
-        mainPanel.add(header, BorderLayout.NORTH);
+        return hero;
+    }
 
-        JPanel employeesPanel = new JPanel(
-                new FlowLayout(FlowLayout.CENTER, 25, 20)
+    // Employees Section
+    private JComponent buildEmployeesSection() {
+
+        JPanel section = new JPanel(new BorderLayout());
+        section.setBackground(Color.WHITE);
+        section.setBorder(new EmptyBorder(35, 55, 55, 55));
+
+        JPanel headingPanel = new JPanel();
+        headingPanel.setLayout(
+                new BoxLayout(headingPanel, BoxLayout.Y_AXIS)
         );
-        employeesPanel.setBackground(Color.WHITE);
+        headingPanel.setBackground(Color.WHITE);
+
+        JLabel sectionTitle = label(
+                "Our " + category + " Experts",
+                heading(30),
+                PINK_900
+        );
+
+        JLabel sectionSubtitle = label(
+                "Selected for " + serviceName,
+                text(16),
+                PINK_800
+        );
+
+        sectionTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sectionSubtitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        headingPanel.add(sectionTitle);
+        headingPanel.add(Box.createVerticalStrut(10));
+        headingPanel.add(sectionSubtitle);
+        headingPanel.add(Box.createVerticalStrut(30));
+
+        employeesPanel.setOpaque(false);
+
+        section.add(headingPanel, BorderLayout.NORTH);
+        section.add(employeesPanel, BorderLayout.CENTER);
+
+        return section;
+    }
+
+    // Display Employees
+    private void refreshEmployees() {
+
+        employeesPanel.removeAll();
 
         ArrayList<Employee> employees = getEmployees();
 
         for (Employee employee : employees) {
-            employeesPanel.add(createEmployeeCard(employee));
+            employeesPanel.add(buildEmployeeCard(employee));
         }
 
-        JScrollPane scrollPane = new JScrollPane(employeesPanel);
-        scrollPane.setBorder(null);
-        scrollPane.getViewport().setBackground(Color.WHITE);
-        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
-
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-
-        setContentPane(mainPanel);
+        employeesPanel.revalidate();
+        employeesPanel.repaint();
     }
 
-    private JPanel createEmployeeCard(Employee employee) {
+    // Employee Card
+    private JPanel buildEmployeeCard(Employee employee) {
 
-        JPanel card = new JPanel(new BorderLayout());
-        card.setBackground(LIGHT_PINK);
-        card.setOpaque(true);
-        card.setBorder(new EmptyBorder(25, 20, 20, 20));
+        RoundedPanel card = new RoundedPanel(22, PINK_50, true);
 
-        card.setPreferredSize(new Dimension(320, 310));
-        card.setMinimumSize(new Dimension(320, 310));
-        card.setMaximumSize(new Dimension(320, 310));
+        card.setLayout(new BoxLayout(card, BoxLayout.Y_AXIS));
+        card.setBorder(new EmptyBorder(30, 25, 30, 25));
 
-        // Employee information
-        JPanel detailsPanel = new JPanel(
-                new GridBagLayout()
-        );
-        detailsPanel.setBackground(LIGHT_PINK);
-        detailsPanel.setOpaque(true);
-
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.anchor = GridBagConstraints.CENTER;
-        gbc.weightx = 1;
-        gbc.insets = new Insets(0, 0, 10, 0);
-
-        JLabel nameLabel = new JLabel(
+        JLabel name = label(
                 employee.name,
-                SwingConstants.CENTER
+                heading(27),
+                PINK_950
         );
-        nameLabel.setFont(new Font("Serif", Font.BOLD, 25));
-        nameLabel.setForeground(DARK_PINK);
 
-        gbc.gridy = 0;
-        detailsPanel.add(nameLabel, gbc);
-
-        JLabel specialtyLabel = new JLabel(
+        JLabel specialty = label(
                 employee.specialty,
-                SwingConstants.CENTER
+                text(15),
+                PINK_800
         );
-        specialtyLabel.setFont(new Font("SansSerif", Font.PLAIN, 14));
-        specialtyLabel.setForeground(TEXT_COLOR);
 
-        gbc.gridy = 1;
-        detailsPanel.add(specialtyLabel, gbc);
-
-        JLabel ratingLabel = new JLabel(
-                "★ " + employee.rating + "  (" +
-                employee.reviews + " reviews)",
-                SwingConstants.CENTER
+        JLabel rating = label(
+                "★ " + employee.rating
+                        + "  (" + employee.reviews + " reviews)",
+                text(15),
+                PINK_800
         );
-        ratingLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
-        ratingLabel.setForeground(DARK_PINK);
 
-        gbc.gridy = 2;
-        gbc.insets = new Insets(5, 0, 15, 0);
-        detailsPanel.add(ratingLabel, gbc);
-
-        JLabel descriptionLabel = new JLabel(
-                "<html><div style='text-align:center; width:230px;'>"
-                + employee.description
-                + "</div></html>",
-                SwingConstants.CENTER
+        JTextArea description = new JTextArea(
+                employee.description
         );
-        descriptionLabel.setFont(new Font("SansSerif", Font.PLAIN, 13));
-        descriptionLabel.setForeground(TEXT_COLOR);
 
-        gbc.gridy = 3;
-        gbc.insets = new Insets(0, 0, 0, 0);
-        detailsPanel.add(descriptionLabel, gbc);
+        description.setFont(text(15));
+        description.setForeground(PINK_800);
+        description.setLineWrap(true);
+        description.setWrapStyleWord(true);
+        description.setEditable(false);
+        description.setFocusable(false);
+        description.setOpaque(false);
+        description.setRows(2);
 
-        // Choose Employee button
-        JButton chooseButton = new JButton("Choose Employee");
-        chooseButton.setFont(new Font("SansSerif", Font.BOLD, 14));
-        chooseButton.setForeground(Color.WHITE);
-        chooseButton.setBackground(DARK_PINK);
-        chooseButton.setOpaque(true);
-        chooseButton.setFocusPainted(false);
-        chooseButton.setBorder(new EmptyBorder(12, 20, 12, 20));
-        chooseButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        name.setAlignmentX(Component.CENTER_ALIGNMENT);
+        specialty.setAlignmentX(Component.CENTER_ALIGNMENT);
+        rating.setAlignmentX(Component.CENTER_ALIGNMENT);
+        description.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Choose Employee Button
+        PillButton chooseButton = new PillButton(
+                "Choose Employee", 15, 25, 10
+        );
+
+        chooseButton.style(
+                PINK_800,
+                Color.WHITE,
+                null,
+                PINK_900
+        );
+
+        chooseButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Original booking action
         chooseButton.addActionListener(e -> {
+
             new AppointmentBooking(
                     serviceName,
                     employee.name
@@ -172,19 +206,24 @@ public class Employees extends JFrame {
             dispose();
         });
 
-        JPanel buttonPanel = new JPanel(
-                new FlowLayout(FlowLayout.CENTER)
-        );
-        buttonPanel.setBackground(LIGHT_PINK);
-        buttonPanel.setOpaque(true);
-        buttonPanel.add(chooseButton);
+        card.add(name);
+        card.add(Box.createVerticalStrut(12));
 
-        card.add(detailsPanel, BorderLayout.CENTER);
-        card.add(buttonPanel, BorderLayout.SOUTH);
+        card.add(specialty);
+        card.add(Box.createVerticalStrut(18));
+
+        card.add(rating);
+        card.add(Box.createVerticalStrut(20));
+
+        card.add(description);
+        card.add(Box.createVerticalStrut(30));
+
+        card.add(chooseButton);
 
         return card;
     }
 
+    // Employee Data
     private ArrayList<Employee> getEmployees() {
 
         ArrayList<Employee> employees = new ArrayList<>();
@@ -192,61 +231,111 @@ public class Employees extends JFrame {
         switch (category) {
 
             case "Hair Care":
+
                 employees.add(new Employee(
                         "Sarah", "Hair Specialist",
                         4.9, 120,
                         "Professional hair styling and treatments."
                 ));
+
                 employees.add(new Employee(
                         "Nora", "Hair Stylist",
                         4.8, 95,
                         "Specialized in modern hair styles."
                 ));
+
                 break;
 
             case "Skincare":
+
                 employees.add(new Employee(
                         "Lama", "Skincare Specialist",
                         4.9, 110,
                         "Experienced in facial and skincare treatments."
                 ));
+
                 employees.add(new Employee(
                         "Maya", "Beauty Specialist",
                         4.8, 87,
                         "Focused on skin care and hydration."
                 ));
+
                 break;
 
             case "Makeup":
+
                 employees.add(new Employee(
                         "Reem", "Makeup Artist",
                         4.9, 135,
                         "Professional makeup for every occasion."
                 ));
+
                 employees.add(new Employee(
                         "Hala", "Makeup Artist",
                         4.8, 102,
                         "Specialized in elegant makeup looks."
                 ));
+
                 break;
 
             case "Nails":
+
                 employees.add(new Employee(
                         "Dana", "Nail Technician",
                         4.9, 98,
                         "Professional manicure and nail art."
                 ));
+
                 employees.add(new Employee(
                         "Joud", "Nail Technician",
                         4.8, 90,
                         "Specialized in nail care and designs."
                 ));
+
                 break;
         }
 
         return employees;
     }
 
+    // Navigation
+    private void navigate(String page) {
+
+        switch (page) {
+
+            case "Home":
+
+                new Home().setVisible(true);
+                dispose();
+
+                break;
+
+            case "Services":
+
+                new Services().setVisible(true);
+                dispose();
+
+                break;
+
+            case "Products":
+
+                new Products().setVisible(true);
+                dispose();
+
+                break;
+
+            default:
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "\"" + page + "\" page is not connected yet.",
+                        "Glam & Go",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+        }
+    }
+
+    // Employee Class
     private static class Employee {
 
         String name;
@@ -262,6 +351,7 @@ public class Employees extends JFrame {
                 int reviews,
                 String description
         ) {
+
             this.name = name;
             this.specialty = specialty;
             this.rating = rating;

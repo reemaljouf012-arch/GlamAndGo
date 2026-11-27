@@ -306,37 +306,25 @@ public class Home extends JFrame {
         switch (page) {
 
             case "Home":
-
                 break;
 
             case "Services":
-
                 new Services().setVisible(true);
-
                 dispose();
-
                 break;
 
             case "Products":
-
                 new Products().setVisible(true);
-
                 dispose();
-
                 break;
 
-            // Shopping Cart Navigation
             case "Cart":
             case "Shopping Cart":
-
                 new ShoppingCart().setVisible(true);
-
                 dispose();
-
                 break;
 
             default:
-
                 JOptionPane.showMessageDialog(
                         this,
                         "\"" + page
@@ -720,19 +708,16 @@ public class Home extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-
                 viewAll.setForeground(PINK_500);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-
                 viewAll.setForeground(PINK_800);
             }
 
             @Override
             public void mouseClicked(MouseEvent e) {
-
                 navigate("Products");
             }
         });
@@ -785,7 +770,6 @@ public class Home extends JFrame {
             }
 
             if (count == 4) {
-
                 break;
             }
 
@@ -822,39 +806,207 @@ public class Home extends JFrame {
                 PINK_800
         ));
 
-        content.add(Box.createVerticalStrut(44));
+        content.add(Box.createVerticalStrut(28));
 
-        JPanel grid = new JPanel(
-                new GridLayout(1, 3, 28, 0));
+        // Add Review button on the left
 
-        grid.setOpaque(false);
+        JPanel actionRow = new JPanel(
+                new FlowLayout(FlowLayout.LEFT, 0, 0));
 
-        grid.add(reviewCard(
+        actionRow.setOpaque(false);
+
+        PillButton addReviewButton = new PillButton(
+                "Add Review", 16f, 24, 10)
+                .style(PINK_800, Color.WHITE,
+                        null, PINK_950);
+
+        addReviewButton.addActionListener(
+                e -> openAddReviewDialog(reviewsGrid));
+
+        actionRow.add(addReviewButton);
+
+        content.add(fixedHeight(actionRow));
+
+        content.add(Box.createVerticalStrut(24));
+
+        // Reviews grid
+
+        reviewsGrid = new JPanel(
+                new GridLayout(0, 3, 28, 28));
+
+        reviewsGrid.setOpaque(false);
+
+        reviewsGrid.add(reviewCard(
                 "Noura",
                 5,
                 "The staff was so professional and my hair "
                 + "has never looked better. Booking was quick and easy!"
         ));
 
-        grid.add(reviewCard(
+        reviewsGrid.add(reviewCard(
                 "Lama",
                 5,
                 "I booked my facial through the app and picked "
                 + "my favorite specialist. Beautiful salon and amazing service."
         ));
 
-        grid.add(reviewCard(
+        reviewsGrid.add(reviewCard(
                 "Reem",
                 4,
                 "Loved the products I bought after my appointment. "
                 + "The quality is great and ordering was smooth."
         ));
 
-        content.add(grid);
+        content.add(reviewsGrid);
 
         return new Section(
                 PINK_50, 80, 1200, content);
     }
+
+    // Shared reviews panel
+
+    private JPanel reviewsGrid;
+
+    // ===================== Add Review Dialog =====================
+
+    private void openAddReviewDialog(JPanel grid) {
+
+        String userName = UserAccount.getCurrentUserName();
+
+        if (userName == null || userName.trim().isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please log in to your account before adding a review.",
+                    "Login Required",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+
+            return;
+        }
+
+        JPanel form = new JPanel();
+
+        form.setLayout(new BoxLayout(
+                form, BoxLayout.Y_AXIS));
+
+        form.setBackground(Color.WHITE);
+
+        form.setBorder(new EmptyBorder(12, 10, 12, 10));
+
+        JLabel nameTitle = label(
+                "Your Name",
+                text(14f),
+                PINK_700
+        );
+
+        JLabel nameValue = label(
+                userName,
+                heading(20f),
+                PINK_900
+        );
+
+        nameTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+        nameValue.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        form.add(nameTitle);
+        form.add(Box.createVerticalStrut(5));
+        form.add(nameValue);
+
+        form.add(Box.createVerticalStrut(20));
+
+        JLabel ratingTitle = label(
+                "Your Rating",
+                text(14f),
+                PINK_700
+        );
+
+        ratingTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JComboBox<Integer> ratingBox =
+                new JComboBox<>(new Integer[]{5, 4, 3, 2, 1});
+
+        ratingBox.setFont(text(16f));
+        ratingBox.setMaximumSize(
+                new Dimension(Integer.MAX_VALUE, 38));
+
+        ratingBox.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        form.add(ratingTitle);
+        form.add(Box.createVerticalStrut(7));
+        form.add(ratingBox);
+
+        form.add(Box.createVerticalStrut(20));
+
+        JLabel commentTitle = label(
+                "Your Review",
+                text(14f),
+                PINK_700
+        );
+
+        commentTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
+
+        JTextArea commentArea = new JTextArea(5, 30);
+
+        commentArea.setFont(text(15f));
+        commentArea.setLineWrap(true);
+        commentArea.setWrapStyleWord(true);
+        commentArea.setBackground(PINK_50);
+        commentArea.setForeground(PINK_900);
+        commentArea.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        JScrollPane commentScroll = new JScrollPane(commentArea);
+
+        commentScroll.setAlignmentX(Component.LEFT_ALIGNMENT);
+        commentScroll.setPreferredSize(new Dimension(350, 120));
+        commentScroll.setMaximumSize(new Dimension(450, 140));
+
+        form.add(commentTitle);
+        form.add(Box.createVerticalStrut(7));
+        form.add(commentScroll);
+
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                form,
+                "Share Your Experience",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result != JOptionPane.OK_OPTION) {
+            return;
+        }
+
+        String comment = commentArea.getText().trim();
+
+        if (comment.isEmpty()) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Please write your review before submitting.",
+                    "Empty Review",
+                    JOptionPane.WARNING_MESSAGE
+            );
+
+            return;
+        }
+
+        int rating = (Integer) ratingBox.getSelectedItem();
+
+        grid.add(reviewCard(userName, rating, comment));
+
+        grid.revalidate();
+        grid.repaint();
+
+        JOptionPane.showMessageDialog(
+                this,
+                "Thank you! Your review has been added.",
+                "Review Submitted",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    // ===================== Review Card =====================
 
     private JPanel reviewCard(
             String name,

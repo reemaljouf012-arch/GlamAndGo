@@ -1,24 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
- */
 package glamandgo;
 
+import javax.swing.SwingUtilities;
+
 /**
- *
- * @author riri
+ * Glam & Go - application entry point.
+ * Run this class: it opens the Login page.
  */
 public class GlamAndGo {
 
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-System.out.println("reem");
-        // TODO code application logic here
-        // Ghala sync test
-        // rawan 
-        
+        SwingUtilities.invokeLater(() -> new LogIn().setVisible(true));
     }
-    
 }

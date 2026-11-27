@@ -10,7 +10,7 @@ import static glamandgo.Theme.*;
 
 public class MyAppointments extends JFrame {
 
-    // Temporary appointment storage
+    // Appointment Class
     static class Appointment {
 
         final String serviceName;
@@ -31,30 +31,22 @@ public class MyAppointments extends JFrame {
         }
     }
 
-    // Temporary sample appointments
+    // Shared Appointment Storage
     static final ArrayList<Appointment> appointments =
             new ArrayList<>();
 
-    static {
-        appointments.add(new Appointment(
-                "Hair Styling",
-                "Sarah",
-                "02/12/2026",
-                "10:00 AM"
-        ));
+    // Add Appointment From Booking Page
+    public static void addAppointment(
+            String serviceName,
+            String employeeName,
+            String date,
+            String time) {
 
         appointments.add(new Appointment(
-                "Facial Treatment",
-                "Lama",
-                "05/12/2026",
-                "02:00 PM"
-        ));
-
-        appointments.add(new Appointment(
-                "Classic Makeup",
-                "Reem",
-                "08/12/2026",
-                "05:00 PM"
+                serviceName,
+                employeeName,
+                date,
+                time
         ));
     }
 

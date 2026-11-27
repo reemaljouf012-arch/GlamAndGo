@@ -30,15 +30,20 @@ public final class Theme {
 
     private Theme() { }
 
-    // ===================== Colors =====================
-    static final Color PINK_50  = new Color(0xFFF3F7);
-    static final Color PINK_100 = new Color(0xFFE4EC);
-    static final Color PINK_200 = new Color(0xF9CEDB);
-    static final Color PINK_300 = new Color(0xEAB3C4);
-    static final Color PINK_500 = new Color(0xC17690);
-    static final Color PINK_800 = new Color(0x693146);
-    static final Color PINK_900 = new Color(0x4F1D31);
-    static final Color PINK_950 = new Color(0x390C1F);
+   
+// ===================== Colors =====================
+static final Color PINK_50  = new Color(0xFFF3F7);
+static final Color PINK_100 = new Color(0xFFE4EC);
+static final Color PINK_200 = new Color(0xF9CEDB);
+static final Color PINK_300 = new Color(0xEAB3C4);
+static final Color PINK_400 = new Color(0xD794AA);
+static final Color PINK_500 = new Color(0xC17690);
+static final Color PINK_600 = new Color(0xA05C74);
+static final Color PINK_700 = new Color(0x83455C);
+static final Color PINK_800 = new Color(0x693146);
+static final Color PINK_900 = new Color(0x4F1D31);
+static final Color PINK_950 = new Color(0x390C1F);
+
 
     // ===================== Fonts =====================
     static final Font HEADING_FONT = loadFont("/fonts/Recia-Medium.otf");

@@ -192,7 +192,9 @@ public class ShoppingCart extends JFrame {
 
     // ===================== Single Cart Item =====================
 
-    private JComponent buildItem(Product product, int quantity) {
+    private JComponent buildItem(
+            Product product,
+            int quantity) {
 
         JPanel row = new JPanel(
                 new BorderLayout(18, 0)
@@ -204,13 +206,13 @@ public class ShoppingCart extends JFrame {
                 new EmptyBorder(16, 0, 16, 0)
         );
 
-        // Product image
+        // Product Image
 
         CartImage image = new CartImage(product.image);
 
         row.add(image, BorderLayout.WEST);
 
-        // Product information
+        // Product Information
 
         JPanel info = vbox();
 
@@ -244,7 +246,7 @@ public class ShoppingCart extends JFrame {
 
         row.add(info, BorderLayout.CENTER);
 
-        // Quantity and total
+        // Quantity and Total
 
         JPanel actions = vbox();
 
@@ -314,7 +316,7 @@ public class ShoppingCart extends JFrame {
 
         actions.add(Box.createVerticalStrut(10));
 
-        // Remove button
+        // Remove Button
 
         JButton remove = new JButton("Remove");
 
@@ -435,6 +437,8 @@ public class ShoppingCart extends JFrame {
 
         return card;
     }
+
+    // ===================== Summary Row =====================
 
     private JComponent summaryRow(
             String title,
@@ -612,12 +616,15 @@ public class ShoppingCart extends JFrame {
             return;
         }
 
-        JOptionPane.showMessageDialog(
-                this,
-                "Payment page will be connected next.",
-                "Glam & Go",
-                JOptionPane.INFORMATION_MESSAGE
-        );
+        // Open Payment Page
+
+        Payment payment = new Payment();
+
+        payment.setVisible(true);
+
+        // Close Shopping Cart Page
+
+        dispose();
     }
 
     // ===================== Navigation =====================
@@ -651,6 +658,9 @@ public class ShoppingCart extends JFrame {
                 break;
 
             case "Cart":
+            case "Shopping Cart":
+
+                refreshCart();
 
                 break;
 
@@ -678,7 +688,10 @@ public class ShoppingCart extends JFrame {
 
         panel.add(component);
 
-        panel.add(Box.createVerticalStrut(gap));
+        if (gap > 0) {
+
+            panel.add(Box.createVerticalStrut(gap));
+        }
     }
 
     private String money(double amount) {

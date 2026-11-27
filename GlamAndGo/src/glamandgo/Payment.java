@@ -4,11 +4,19 @@ package glamandgo;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.BufferedImage;
+import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.AbstractDocument;
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DocumentFilter;
 
 import static glamandgo.Theme.*;
 
@@ -111,7 +119,6 @@ public class Payment extends JFrame {
         setLayout(new BorderLayout());
 
         if (!savedCards.isEmpty()) {
-
             selectedCard = savedCards.get(0);
         }
 
@@ -120,9 +127,7 @@ public class Payment extends JFrame {
         PageBody body = new PageBody();
 
         body.add(buildHero());
-
         body.add(buildCheckout());
-
         body.add(footer(this::navigate));
 
         JScrollPane scroll = new JScrollPane(
@@ -133,7 +138,8 @@ public class Payment extends JFrame {
 
         scroll.setBorder(null);
 
-        scroll.getVerticalScrollBar().setUnitIncrement(24);
+        scroll.getVerticalScrollBar()
+                .setUnitIncrement(24);
 
         add(scroll, BorderLayout.CENTER);
 
@@ -158,7 +164,6 @@ public class Payment extends JFrame {
         );
 
         updateReceivingMethod();
-
         updatePaymentMethod();
     }
 
@@ -176,10 +181,7 @@ public class Payment extends JFrame {
         ));
 
         return new Section(
-                PINK_50,
-                48,
-                1200,
-                content
+                PINK_50, 48, 1200, content
         );
     }
 
@@ -219,10 +221,7 @@ public class Payment extends JFrame {
         );
 
         return new Section(
-                PINK_50,
-                35,
-                1200,
-                content
+                PINK_50, 35, 1200, content
         );
     }
 
@@ -231,9 +230,7 @@ public class Payment extends JFrame {
     private JComponent buildPaymentForm() {
 
         RoundedPanel form = new RoundedPanel(
-                28,
-                Color.WHITE,
-                true
+                28, Color.WHITE, true
         );
 
         form.setLayout(
@@ -274,7 +271,6 @@ public class Payment extends JFrame {
         ButtonGroup receivingGroup = new ButtonGroup();
 
         receivingGroup.add(deliveryRadio);
-
         receivingGroup.add(pickupRadio);
 
         form.add(buildOption(
@@ -312,7 +308,6 @@ public class Payment extends JFrame {
         ButtonGroup paymentGroup = new ButtonGroup();
 
         paymentGroup.add(cardRadio);
-
         paymentGroup.add(cashRadio);
 
         form.add(buildOption(
@@ -413,9 +408,7 @@ public class Payment extends JFrame {
         );
 
         RoundedPanel info = new RoundedPanel(
-                18,
-                PINK_50,
-                false
+                18, PINK_50, false
         );
 
         info.setLayout(
@@ -447,9 +440,7 @@ public class Payment extends JFrame {
                 PINK_800
         ), 0);
 
-        info.setAlignmentX(
-                Component.LEFT_ALIGNMENT
-        );
+        info.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         pickupPanel.add(info);
     }
@@ -465,9 +456,7 @@ public class Payment extends JFrame {
         );
 
         RoundedPanel container = new RoundedPanel(
-                18,
-                PINK_50,
-                false
+                18, PINK_50, false
         );
 
         container.setLayout(
@@ -523,8 +512,8 @@ public class Payment extends JFrame {
         container.add(Box.createVerticalStrut(15));
 
         addLeft(container, htmlLabel(
-                "Demo payment cards only. "
-                + "Do not use real banking information.",
+                "For testing purposes only. "
+                + "Use fictional card details.",
                 380,
                 "left",
                 text(13f),
@@ -561,7 +550,6 @@ public class Payment extends JFrame {
         } else {
 
             if (!savedCards.contains(selectedCard)) {
-
                 selectedCard = savedCards.get(0);
             }
 
@@ -580,11 +568,9 @@ public class Payment extends JFrame {
         }
 
         savedCardsPanel.revalidate();
-
         savedCardsPanel.repaint();
 
         revalidate();
-
         repaint();
     }
 
@@ -595,9 +581,7 @@ public class Payment extends JFrame {
             ButtonGroup group) {
 
         RoundedPanel cardBox = new RoundedPanel(
-                16,
-                Color.WHITE,
-                false
+                16, Color.WHITE, false
         );
 
         cardBox.setLayout(
@@ -611,6 +595,8 @@ public class Payment extends JFrame {
         cardBox.setAlignmentX(
                 Component.LEFT_ALIGNMENT
         );
+
+        // Card Selection
 
         JRadioButton select = new JRadioButton();
 
@@ -659,7 +645,7 @@ public class Payment extends JFrame {
         ), 5);
 
         addLeft(info, label(
-                "Demo Card",
+                "Test Card",
                 text(12f),
                 PINK_600
         ), 0);
@@ -711,8 +697,6 @@ public class Payment extends JFrame {
 
         dialog.setResizable(false);
 
-        // Main dialog panel
-
         JPanel root = new JPanel(new GridBagLayout());
 
         root.setBackground(Color.WHITE);
@@ -725,13 +709,9 @@ public class Payment extends JFrame {
                 new GridBagConstraints();
 
         gbc.gridx = 0;
-
         gbc.gridy = 0;
-
         gbc.weightx = 1.0;
-
         gbc.fill = GridBagConstraints.HORIZONTAL;
-
         gbc.insets = new Insets(0, 0, 12, 0);
 
         // ===================== Title =====================
@@ -751,7 +731,7 @@ public class Payment extends JFrame {
         gbc.gridy++;
 
         JLabel subtitle = label(
-                "Add a demo payment card.",
+                "Enter your test card details.",
                 text(15f),
                 PINK_800
         );
@@ -764,8 +744,12 @@ public class Payment extends JFrame {
 
         // ===================== Cardholder Name =====================
 
-        JTextField holderField = new JTextField(
-                nameField.getText().trim()
+        JTextField holderField = new JTextField();
+
+        setNameFilter(holderField);
+
+        holderField.setToolTipText(
+                "Name as shown on the card"
         );
 
         JPanel holderPanel = dialogField(
@@ -779,18 +763,6 @@ public class Payment extends JFrame {
 
         // ===================== Card Type =====================
 
-        JPanel typePanel = new JPanel(
-                new BorderLayout(0, 8)
-        );
-
-        typePanel.setOpaque(false);
-
-        typePanel.add(label(
-                "Card Type",
-                text(16f),
-                PINK_800
-        ), BorderLayout.NORTH);
-
         JComboBox<String> typeCombo =
                 new JComboBox<>(new String[]{
                     "Mada",
@@ -798,18 +770,17 @@ public class Payment extends JFrame {
                     "Mastercard"
                 });
 
-        typeCombo.setFont(text(16f));
+        styleCardCombo(typeCombo);
 
-        typeCombo.setForeground(PINK_900);
-
-        typeCombo.setBackground(PINK_50);
-
-        typeCombo.setPreferredSize(
-                new Dimension(200, 42)
+        JPanel typePanel = new JPanel(
+                new BorderLayout(0, 8)
         );
 
-        typeCombo.setBorder(
-                BorderFactory.createLineBorder(PINK_300)
+        typePanel.setOpaque(false);
+
+        typePanel.add(
+                label("Card Type", text(16f), PINK_800),
+                BorderLayout.NORTH
         );
 
         typePanel.add(
@@ -821,48 +792,217 @@ public class Payment extends JFrame {
 
         root.add(typePanel, gbc);
 
-        // ===================== Demo Card Number =====================
+        // ===================== Card Number =====================
 
-        JTextField numberField =
-                new JTextField("0000 0000 0000 1234");
+        JTextField numberField = new JTextField();
 
-        numberField.setEditable(false);
+        numberField.setToolTipText(
+                "Enter any fictional 16-digit card number"
+        );
+
+        setCardNumberFilter(numberField);
 
         JPanel numberPanel = dialogField(
-                "Demo Card Number",
+                "Card Number",
                 numberField
         );
+
+        JLabel numberCount = label(
+                "0 / 16",
+                text(12f),
+                PINK_600
+        );
+
+        numberCount.setHorizontalAlignment(
+                SwingConstants.RIGHT
+        );
+
+        numberPanel.add(
+                numberCount,
+                BorderLayout.SOUTH
+        );
+
+        numberField.getDocument().addDocumentListener(
+                new DocumentListener() {
+
+            private void updateCount() {
+
+                int count = numberField.getText()
+                        .replaceAll("[^0-9]", "")
+                        .length();
+
+                numberCount.setText(
+                        count + " / 16"
+                );
+            }
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateCount();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateCount();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateCount();
+            }
+        });
 
         gbc.gridy++;
 
         root.add(numberPanel, gbc);
 
-        typeCombo.addActionListener(e -> {
+        // ===================== Expiry Date =====================
 
-            String type =
-                    (String) typeCombo.getSelectedItem();
+        JComboBox<String> monthCombo =
+                new JComboBox<>();
 
-            if ("Visa".equals(type)) {
+        monthCombo.addItem("MM");
 
-                numberField.setText(
-                        "4242 4242 4242 4242"
+        for (int month = 1; month <= 12; month++) {
+
+            monthCombo.addItem(
+                    String.format(
+                            Locale.US,
+                            "%02d",
+                            month
+                    )
+            );
+        }
+
+        styleCardCombo(monthCombo);
+
+        JComboBox<String> yearCombo =
+                new JComboBox<>();
+
+        yearCombo.addItem("YYYY");
+
+        int currentYear = YearMonth.now().getYear();
+
+        for (int year = currentYear;
+                year <= currentYear + 15;
+                year++) {
+
+            yearCombo.addItem(
+                    String.valueOf(year)
+            );
+        }
+
+        styleCardCombo(yearCombo);
+
+        JPanel expiryPanel = new JPanel(
+                new BorderLayout(0, 8)
+        );
+
+        expiryPanel.setOpaque(false);
+
+        expiryPanel.add(
+                label("Expiry Date", text(16f), PINK_800),
+                BorderLayout.NORTH
+        );
+
+        JPanel dateFields = new JPanel(
+                new GridLayout(1, 2, 10, 0)
+        );
+
+        dateFields.setOpaque(false);
+
+        dateFields.add(monthCombo);
+
+        dateFields.add(yearCombo);
+
+        expiryPanel.add(
+                dateFields,
+                BorderLayout.CENTER
+        );
+
+        // ===================== CVV =====================
+
+        JPasswordField cvvField =
+                new JPasswordField();
+
+        cvvField.setEchoChar('\u2022');
+
+        cvvField.setToolTipText(
+                "Enter a fictional 3-digit security code"
+        );
+
+        setDigitFilter(cvvField, 3);
+
+        JPanel cvvPanel = dialogField(
+                "CVV",
+                cvvField
+        );
+
+        JLabel cvvCount = label(
+                "0 / 3",
+                text(12f),
+                PINK_600
+        );
+
+        cvvCount.setHorizontalAlignment(
+                SwingConstants.RIGHT
+        );
+
+        cvvPanel.add(
+                cvvCount,
+                BorderLayout.SOUTH
+        );
+
+        cvvField.getDocument().addDocumentListener(
+                new DocumentListener() {
+
+            private void updateCount() {
+
+                cvvCount.setText(
+                        cvvField.getDocument().getLength()
+                        + " / 3"
                 );
+            }
 
-            } else if ("Mastercard".equals(type)) {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateCount();
+            }
 
-                numberField.setText(
-                        "5555 5555 5555 4444"
-                );
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateCount();
+            }
 
-            } else {
-
-                numberField.setText(
-                        "0000 0000 0000 1234"
-                );
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                updateCount();
             }
         });
 
-        // ===================== Expiry Date and CVV =====================
+        // ===================== Date and CVV Layout =====================
+
+        JPanel expiryWrapper = new JPanel(
+                new BorderLayout()
+        );
+
+        expiryWrapper.setOpaque(false);
+
+        expiryWrapper.add(
+                expiryPanel,
+                BorderLayout.NORTH
+        );
+
+        JPanel cvvWrapper = new JPanel(
+                new BorderLayout()
+        );
+
+        cvvWrapper.setOpaque(false);
+
+        cvvWrapper.add(
+                cvvPanel,
+                BorderLayout.NORTH
+        );
 
         JPanel details = new JPanel(
                 new GridLayout(1, 2, 15, 0)
@@ -870,40 +1010,20 @@ public class Payment extends JFrame {
 
         details.setOpaque(false);
 
-        JTextField expiryField =
-                new JTextField("12/30");
+        details.add(expiryWrapper);
 
-        expiryField.setEditable(false);
-
-        JPanel expiryPanel = dialogField(
-                "Expiry Date",
-                expiryField
-        );
-
-        JPasswordField cvvField =
-                new JPasswordField("000");
-
-        cvvField.setEditable(false);
-
-        JPanel cvvPanel = dialogField(
-                "Demo CVV",
-                cvvField
-        );
-
-        details.add(expiryPanel);
-
-        details.add(cvvPanel);
+        details.add(cvvWrapper);
 
         gbc.gridy++;
 
         root.add(details, gbc);
 
-        // ===================== Demo Notice =====================
+        // ===================== Testing Notice =====================
 
         JLabel notice = htmlLabel(
-                "For demonstration purposes only. "
-                + "No real card details are collected.",
-                320,
+                "For testing purposes only. "
+                + "Do not enter real banking information.",
+                340,
                 "center",
                 text(13f),
                 PINK_600
@@ -938,13 +1058,19 @@ public class Payment extends JFrame {
             String holder =
                     holderField.getText().trim();
 
+            String type =
+                    (String) typeCombo.getSelectedItem();
+
+            String number = numberField.getText()
+                    .replaceAll("[^0-9]", "");
+
+            // Validate Cardholder Name
+
             if (holder.isEmpty()) {
 
-                JOptionPane.showMessageDialog(
+                showCardWarning(
                         dialog,
-                        "Please enter the cardholder name.",
-                        "Add Card",
-                        JOptionPane.WARNING_MESSAGE
+                        "Please enter the cardholder name."
                 );
 
                 holderField.requestFocusInWindow();
@@ -952,12 +1078,94 @@ public class Payment extends JFrame {
                 return;
             }
 
-            String type =
-                    (String) typeCombo.getSelectedItem();
+            // Validate Card Number Length Only
+            // Any fictional 16-digit number is accepted.
 
-            String number = numberField
-                    .getText()
-                    .replace(" ", "");
+            if (!number.matches("[0-9]{16}")) {
+
+                showCardWarning(
+                        dialog,
+                        "Card number must contain 16 digits."
+                );
+
+                numberField.requestFocusInWindow();
+
+                return;
+            }
+
+            // Validate Expiry Selection
+
+            if (monthCombo.getSelectedIndex() == 0
+                    || yearCombo.getSelectedIndex() == 0) {
+
+                showCardWarning(
+                        dialog,
+                        "Please select the expiry month and year."
+                );
+
+                return;
+            }
+
+            int month = Integer.parseInt(
+                    (String) monthCombo.getSelectedItem()
+            );
+
+            int year = Integer.parseInt(
+                    (String) yearCombo.getSelectedItem()
+            );
+
+            YearMonth expiryMonth =
+                    YearMonth.of(year, month);
+
+            // Validate Expiry Date
+
+            if (expiryMonth.isBefore(YearMonth.now())) {
+
+                showCardWarning(
+                        dialog,
+                        "This card has expired."
+                );
+
+                return;
+            }
+
+            // Validate CVV
+
+            char[] cvv = cvvField.getPassword();
+
+            boolean validCvv = cvv.length == 3;
+
+            for (char digit : cvv) {
+
+                if (digit < '0' || digit > '9') {
+                    validCvv = false;
+                }
+            }
+
+            Arrays.fill(cvv, '\0');
+
+            if (!validCvv) {
+
+                showCardWarning(
+                        dialog,
+                        "CVV must contain 3 digits."
+                );
+
+                cvvField.requestFocusInWindow();
+
+                return;
+            }
+
+            // Format Expiry Date
+
+            String expiry = String.format(
+                    Locale.US,
+                    "%02d/%02d",
+                    month,
+                    year % 100
+            );
+
+            // Store Only Last Four Digits
 
             String lastFour = number.substring(
                     number.length() - 4
@@ -967,12 +1175,16 @@ public class Payment extends JFrame {
                     holder,
                     type,
                     lastFour,
-                    expiryField.getText()
+                    expiry
             );
 
             savedCards.add(newCard);
 
             selectedCard = newCard;
+
+            numberField.setText("");
+
+            cvvField.setText("");
 
             refreshSavedCards();
 
@@ -1013,9 +1225,14 @@ public class Payment extends JFrame {
                 )
         );
 
-        cancelButton.addActionListener(
-                e -> dialog.dispose()
-        );
+        cancelButton.addActionListener(e -> {
+
+            numberField.setText("");
+
+            cvvField.setText("");
+
+            dialog.dispose();
+        });
 
         JPanel cancelPanel = new JPanel(
                 new FlowLayout(FlowLayout.CENTER, 0, 0)
@@ -1029,7 +1246,22 @@ public class Payment extends JFrame {
 
         root.add(cancelPanel, gbc);
 
-        // ===================== Responsive Dialog Body =====================
+        // Clear Fields When Closing Dialog
+
+        dialog.addWindowListener(
+                new java.awt.event.WindowAdapter() {
+
+            @Override
+            public void windowClosing(
+                    java.awt.event.WindowEvent e) {
+
+                numberField.setText("");
+
+                cvvField.setText("");
+            }
+        });
+
+        // ===================== Responsive Dialog =====================
 
         PageBody dialogBody = new PageBody();
 
@@ -1061,8 +1293,6 @@ public class Payment extends JFrame {
 
         dialog.setContentPane(dialogScroll);
 
-        // Size based on content and available screen space
-
         Dimension preferred = root.getPreferredSize();
 
         Rectangle screen = GraphicsEnvironment
@@ -1070,7 +1300,7 @@ public class Payment extends JFrame {
                 .getMaximumWindowBounds();
 
         int dialogWidth = Math.min(
-                Math.max(540, preferred.width + 45),
+                Math.max(580, preferred.width + 45),
                 screen.width - 40
         );
 
@@ -1086,6 +1316,322 @@ public class Payment extends JFrame {
         dialog.getRootPane().setDefaultButton(saveButton);
 
         dialog.setVisible(true);
+    }
+
+    // ===================== Style Card ComboBox =====================
+
+    private void styleCardCombo(
+            JComboBox<String> combo) {
+
+        combo.setFont(text(16f));
+
+        combo.setForeground(PINK_900);
+
+        combo.setBackground(PINK_50);
+
+        combo.setPreferredSize(
+                new Dimension(140, 42)
+        );
+
+        combo.setMinimumSize(
+                new Dimension(70, 42)
+        );
+
+        combo.setBorder(
+                BorderFactory.createLineBorder(PINK_300)
+        );
+
+        combo.setCursor(
+                Cursor.getPredefinedCursor(
+                        Cursor.HAND_CURSOR
+                )
+        );
+    }
+
+    // ===================== Cardholder Name Filter =====================
+
+    private void setNameFilter(JTextField field) {
+
+        AbstractDocument document =
+                (AbstractDocument) field.getDocument();
+
+        document.setDocumentFilter(
+                new DocumentFilter() {
+
+            @Override
+            public void insertString(
+                    FilterBypass fb,
+                    int offset,
+                    String value,
+                    AttributeSet attr)
+                    throws BadLocationException {
+
+                replace(
+                        fb, offset, 0, value, attr
+                );
+            }
+
+            @Override
+            public void replace(
+                    FilterBypass fb,
+                    int offset,
+                    int length,
+                    String value,
+                    AttributeSet attr)
+                    throws BadLocationException {
+
+                if (value == null) {
+                    value = "";
+                }
+
+                String oldText = fb.getDocument().getText(
+                        0,
+                        fb.getDocument().getLength()
+                );
+
+                String newText =
+                        oldText.substring(0, offset)
+                        + value
+                        + oldText.substring(offset + length);
+
+                if (newText.matches("[\\p{L} .'-]*")
+                        && newText.length() <= 50) {
+
+                    fb.replace(
+                            offset,
+                            length,
+                            value,
+                            attr
+                    );
+                }
+            }
+        });
+    }
+
+    // ===================== Card Number Filter =====================
+
+    private void setCardNumberFilter(JTextField field) {
+
+        AbstractDocument document =
+                (AbstractDocument) field.getDocument();
+
+        document.setDocumentFilter(
+                new DocumentFilter() {
+
+            @Override
+            public void insertString(
+                    FilterBypass fb,
+                    int offset,
+                    String value,
+                    AttributeSet attr)
+                    throws BadLocationException {
+
+                replace(
+                        fb, offset, 0, value, attr
+                );
+            }
+
+            @Override
+            public void remove(
+                    FilterBypass fb,
+                    int offset,
+                    int length)
+                    throws BadLocationException {
+
+                String oldText = fb.getDocument().getText(
+                        0,
+                        fb.getDocument().getLength()
+                );
+
+                if (length == 1
+                        && offset > 0
+                        && offset < oldText.length()
+                        && oldText.charAt(offset) == ' ') {
+
+                    offset--;
+
+                    length++;
+                }
+
+                replace(
+                        fb,
+                        offset,
+                        length,
+                        "",
+                        null
+                );
+            }
+
+            @Override
+            public void replace(
+                    FilterBypass fb,
+                    int offset,
+                    int length,
+                    String value,
+                    AttributeSet attr)
+                    throws BadLocationException {
+
+                if (value == null) {
+                    value = "";
+                }
+
+                if (!value.matches("[0-9 ]*")) {
+                    return;
+                }
+
+                String oldText = fb.getDocument().getText(
+                        0,
+                        fb.getDocument().getLength()
+                );
+
+                String newText =
+                        oldText.substring(0, offset)
+                        + value
+                        + oldText.substring(offset + length);
+
+                String digits = newText.replaceAll(
+                        "[^0-9]",
+                        ""
+                );
+
+                // Maximum 16 Digits
+
+                if (digits.length() > 16) {
+                    return;
+                }
+
+                // Automatic Formatting
+
+                StringBuilder formatted =
+                        new StringBuilder();
+
+                for (int i = 0;
+                        i < digits.length();
+                        i++) {
+
+                    if (i > 0 && i % 4 == 0) {
+                        formatted.append(" ");
+                    }
+
+                    formatted.append(
+                            digits.charAt(i)
+                    );
+                }
+
+                // Calculate Caret Position
+
+                int digitsBeforeCaret = (
+                        oldText.substring(0, offset)
+                        + value
+                ).replaceAll("[^0-9]", "").length();
+
+                int caretPosition = 0;
+
+                int seenDigits = 0;
+
+                while (caretPosition < formatted.length()
+                        && seenDigits < digitsBeforeCaret) {
+
+                    if (Character.isDigit(
+                            formatted.charAt(caretPosition))) {
+
+                        seenDigits++;
+                    }
+
+                    caretPosition++;
+                }
+
+                fb.replace(
+                        0,
+                        fb.getDocument().getLength(),
+                        formatted.toString(),
+                        attr
+                );
+
+                final int newCaret = caretPosition;
+
+                SwingUtilities.invokeLater(() -> {
+
+                    field.setCaretPosition(
+                            Math.min(
+                                    newCaret,
+                                    field.getDocument().getLength()
+                            )
+                    );
+                });
+            }
+        });
+    }
+
+    // ===================== Digits Only Filter =====================
+
+    private void setDigitFilter(
+            JTextField field,
+            int maxLength) {
+
+        AbstractDocument document =
+                (AbstractDocument) field.getDocument();
+
+        document.setDocumentFilter(
+                new DocumentFilter() {
+
+            @Override
+            public void insertString(
+                    FilterBypass fb,
+                    int offset,
+                    String value,
+                    AttributeSet attr)
+                    throws BadLocationException {
+
+                replace(
+                        fb, offset, 0, value, attr
+                );
+            }
+
+            @Override
+            public void replace(
+                    FilterBypass fb,
+                    int offset,
+                    int length,
+                    String value,
+                    AttributeSet attr)
+                    throws BadLocationException {
+
+                if (value == null) {
+                    value = "";
+                }
+
+                int newLength =
+                        fb.getDocument().getLength()
+                        - length
+                        + value.length();
+
+                if (value.matches("[0-9]*")
+                        && newLength <= maxLength) {
+
+                    fb.replace(
+                            offset,
+                            length,
+                            value,
+                            attr
+                    );
+                }
+            }
+        });
+    }
+
+    // ===================== Card Warning =====================
+
+    private void showCardWarning(
+            JDialog dialog,
+            String message) {
+
+        JOptionPane.showMessageDialog(
+                dialog,
+                message,
+                "Invalid Card Details",
+                JOptionPane.WARNING_MESSAGE
+        );
     }
 
     // ===================== Dialog Field Helper =====================
@@ -1151,7 +1697,6 @@ public class Payment extends JFrame {
             savedCards.remove(card);
 
             if (selectedCard == card) {
-
                 selectedCard = null;
             }
 
@@ -1166,9 +1711,7 @@ public class Payment extends JFrame {
             String description) {
 
         RoundedPanel option = new RoundedPanel(
-                18,
-                PINK_50,
-                false
+                18, PINK_50, false
         );
 
         option.setLayout(
@@ -1215,9 +1758,7 @@ public class Payment extends JFrame {
     private JComponent buildOrderSummary() {
 
         RoundedPanel summary = new RoundedPanel(
-                28,
-                PINK_100,
-                true
+                28, PINK_100, true
         );
 
         summary.setLayout(
@@ -1469,7 +2010,6 @@ public class Payment extends JFrame {
     private double calculateDeliveryFee() {
 
         if (ProductDetails.cart.isEmpty()) {
-
             return 0.0;
         }
 
@@ -1499,7 +2039,7 @@ public class Payment extends JFrame {
         );
     }
 
-    // ===================== Validation =====================
+    // ===================== Order Validation =====================
 
     private boolean validateOrder() {
 
@@ -1536,6 +2076,8 @@ public class Payment extends JFrame {
             return false;
         }
 
+        // Validate Delivery Address
+
         if (deliveryRadio.isSelected()) {
 
             if (cityField.getText().trim().isEmpty()
@@ -1551,7 +2093,7 @@ public class Payment extends JFrame {
             }
         }
 
-        // Validate Selected Payment Card
+        // Validate Selected Card
 
         if (cardRadio.isSelected()) {
 
@@ -1560,6 +2102,24 @@ public class Payment extends JFrame {
 
                 showWarning(
                         "Please add or select a payment card."
+                );
+
+                return false;
+            }
+
+            int month = Integer.parseInt(
+                    selectedCard.expiryDate.substring(0, 2)
+            );
+
+            int year = 2000 + Integer.parseInt(
+                    selectedCard.expiryDate.substring(3, 5)
+            );
+
+            if (YearMonth.of(year, month)
+                    .isBefore(YearMonth.now())) {
+
+                showWarning(
+                        "Your selected card has expired."
                 );
 
                 return false;
@@ -1591,7 +2151,6 @@ public class Payment extends JFrame {
     private void placeOrder() {
 
         if (!validateOrder()) {
-
             return;
         }
 
@@ -1608,7 +2167,7 @@ public class Payment extends JFrame {
                     selectedCard.cardType
                     + " ending in "
                     + selectedCard.lastFour
-                    + " (Demo)";
+                    + " (Test)";
 
         } else {
 
@@ -1652,12 +2211,11 @@ public class Payment extends JFrame {
         );
 
         if (result != JOptionPane.YES_OPTION) {
-
             return;
         }
 
-        // Temporary order confirmation.
-        // My Orders and database will be connected later.
+        // Temporary Order Confirmation
+        // Database integration will be added later.
 
         String paymentStatus =
                 cardRadio.isSelected()
@@ -1668,7 +2226,7 @@ public class Payment extends JFrame {
 
         JOptionPane.showMessageDialog(
                 this,
-                "Your demo order has been confirmed!\n\n"
+                "Your order has been confirmed!\n\n"
                 + "Thank you for shopping with Glam & Go.\n\n"
                 + paymentStatus
                 + "\nTotal: " + money(total),

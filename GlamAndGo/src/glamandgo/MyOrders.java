@@ -1697,6 +1697,11 @@ public class MyOrders extends JFrame {
 
                 break;
 
+            case "My Account":
+                new MyAccount().setVisible(true);
+                dispose();
+                break;
+
             case "My Orders":
             case "Orders":
 

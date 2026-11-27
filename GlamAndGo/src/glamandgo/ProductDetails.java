@@ -94,7 +94,7 @@ public class ProductDetails extends JDialog {
                 new GridLayout(1, 2, 28, 0)
         );
 
-        hero.add(buildGallery());
+        hero.add(new ProductPhoto(product));
 
         hero.add(buildInformation());
 
@@ -153,36 +153,6 @@ public class ProductDetails extends JDialog {
         return header;
     }
 
-    // ===================== Product Gallery =====================
-
-    private JPanel buildGallery() {
-
-        JPanel gallery = transparent(
-                new BorderLayout(9, 0)
-        );
-
-        gallery.add(
-                new ProductPhoto(product, 0),
-                BorderLayout.CENTER
-        );
-
-        JPanel sidePhotos = transparent(
-                new GridLayout(2, 1, 0, 9)
-        );
-
-        sidePhotos.setPreferredSize(
-                new Dimension(135, 350)
-        );
-
-        sidePhotos.add(new ProductPhoto(product, 1));
-
-        sidePhotos.add(new ProductPhoto(product, 2));
-
-        gallery.add(sidePhotos, BorderLayout.EAST);
-
-        return gallery;
-    }
-
     // ===================== Product Information =====================
 
     private JPanel buildInformation() {
@@ -195,11 +165,7 @@ public class ProductDetails extends JDialog {
                 5
         );
 
-        addLeft(
-                info,
-                label(product.desc, text(20), PINK_800),
-                20
-        );
+        info.add(Box.createVerticalStrut(20));
 
         JPanel priceRow = transparent(
                 new BorderLayout(12, 0)
@@ -230,22 +196,7 @@ public class ProductDetails extends JDialog {
 
         addLeft(info, priceRow, 18);
 
-        String description;
-
-        if ("Silk Repair Serum".equals(product.name)) {
-
-            description =
-                    "A lightweight finishing serum for smooth, shiny hair. "
-                    + "Use it as the final touch in your styling routine "
-                    + "for a soft, glossy finish.";
-
-        } else {
-
-            description = product.desc
-                    + ". Part of the Glam & Go "
-                    + product.category.toLowerCase(Locale.ROOT)
-                    + " collection.";
-        }
+        String description = product.desc;
 
         JTextArea descriptionArea =
                 new JTextArea(description, 3, 27);
@@ -273,7 +224,7 @@ public class ProductDetails extends JDialog {
         );
 
         facts.add(
-                factCard("Collection", product.category)
+                factCard("Category", product.category)
         );
 
         facts.add(
@@ -492,75 +443,15 @@ public class ProductDetails extends JDialog {
 
         private final Product product;
 
-        private final int view;
-
         private final BufferedImage photo;
 
-        ProductPhoto(Product product, int view) {
+        ProductPhoto(Product product) {
 
             this.product = product;
 
-            this.view = view;
-
-            this.photo = findPhoto();
+            this.photo = loadImage(product.image);
 
             setToolTipText(product.name);
-        }
-
-        private BufferedImage findPhoto() {
-
-            if ("Silk Repair Serum".equals(product.name)) {
-
-                BufferedImage sheet =
-                        loadImage("/images/serum.png");
-
-                if (sheet != null && sheet.getWidth() >= 3) {
-
-                    int left =
-                            view * sheet.getWidth() / 3;
-
-                    int right =
-                            (view + 1) * sheet.getWidth() / 3;
-
-                    return sheet.getSubimage(
-                            left,
-                            0,
-                            right - left,
-                            sheet.getHeight()
-                    );
-                }
-            }
-
-            String path = product.image;
-
-            if (path == null || path.isEmpty()) {
-
-                return null;
-            }
-
-            int dot = path.lastIndexOf('.');
-
-            if (view > 0 && dot > 0) {
-
-                String suffix = view == 1
-                        ? "-detail"
-                        : "-set";
-
-                String extraPath =
-                        path.substring(0, dot)
-                        + suffix
-                        + path.substring(dot);
-
-                BufferedImage extra =
-                        loadImage(extraPath);
-
-                if (extra != null) {
-
-                    return extra;
-                }
-            }
-
-            return loadImage(path);
         }
 
         @Override
@@ -622,19 +513,9 @@ public class ProductDetails extends JDialog {
                     h / 290.0
             );
 
-            if (view == 1) {
-
-                scale *= 1.7;
-            }
-
             g.translate(w / 2.0, h / 2.0);
 
             g.scale(scale, scale);
-
-            if (view == 2) {
-
-                g.rotate(-0.16);
-            }
 
             g.setColor(PINK_300);
 

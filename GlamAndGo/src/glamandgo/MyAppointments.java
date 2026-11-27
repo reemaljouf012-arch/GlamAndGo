@@ -411,6 +411,11 @@ public class MyAppointments extends JFrame {
 
                 break;
 
+            case "My Account":
+                new MyAccount().setVisible(true);
+                dispose();
+                break;
+
             case "Appointments":
             case "My Appointments":
 

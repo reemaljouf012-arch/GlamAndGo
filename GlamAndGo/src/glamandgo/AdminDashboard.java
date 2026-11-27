@@ -2,7 +2,6 @@
 package glamandgo;
 
 import java.awt.*;
-import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
@@ -44,8 +43,6 @@ public class AdminDashboard extends JFrame {
     private JLabel servicesCount;
     private JLabel productsCount;
 
-    private String currentPage = "Overview";
-
     // ===================== Constructor =====================
 
     public AdminDashboard() {
@@ -64,7 +61,7 @@ public class AdminDashboard extends JFrame {
         showPage("Overview");
     }
 
-    // ===================== Main Layout =====================
+    // ===================== Sidebar =====================
 
     private JComponent buildSidebar() {
 
@@ -77,16 +74,10 @@ public class AdminDashboard extends JFrame {
                 new EmptyBorder(30, 20, 25, 20));
 
         JLabel logo = label(
-                "Glam & Go",
-                heading(29),
-                PINK_50
-        );
+                "Glam & Go", heading(29), PINK_50);
 
         JLabel adminLabel = label(
-                "ADMIN PANEL",
-                text(11),
-                PINK_300
-        );
+                "ADMIN PANEL", text(11), PINK_300);
 
         logo.setAlignmentX(Component.LEFT_ALIGNMENT);
         adminLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -97,12 +88,10 @@ public class AdminDashboard extends JFrame {
         sidebar.add(Box.createVerticalStrut(45));
 
         JLabel menuLabel = label(
-                "WORKSPACE",
-                text(11),
-                PINK_400
-        );
+                "WORKSPACE", text(11), PINK_400);
 
         menuLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         sidebar.add(menuLabel);
         sidebar.add(Box.createVerticalStrut(14));
 
@@ -146,21 +135,19 @@ public class AdminDashboard extends JFrame {
     private void addNavigationButton(String name) {
 
         PillButton button = new PillButton(
-                name, 15, 18, 13
-        );
+                name, 15, 18, 13);
 
         button.setHorizontalAlignment(SwingConstants.LEFT);
         button.setAlignmentX(Component.LEFT_ALIGNMENT);
-        button.setMaximumSize(
-                new Dimension(215, 48));
-        button.setPreferredSize(
-                new Dimension(215, 48));
+        button.setMaximumSize(new Dimension(215, 48));
+        button.setPreferredSize(new Dimension(215, 48));
 
         styleNavigationButton(button, false);
 
         button.addActionListener(e -> showPage(name));
 
         navigationButtons.add(button);
+
         sidebar.add(button);
         sidebar.add(Box.createVerticalStrut(9));
     }
@@ -193,6 +180,7 @@ public class AdminDashboard extends JFrame {
         main.setBackground(PAGE_BG);
 
         JPanel header = new JPanel(new BorderLayout());
+
         header.setBackground(Color.WHITE);
         header.setBorder(
                 new EmptyBorder(24, 38, 22, 38));
@@ -209,18 +197,15 @@ public class AdminDashboard extends JFrame {
         titleGroup.add(Box.createVerticalStrut(5));
         titleGroup.add(pageSubtitle);
 
-        JLabel adminBadge = label(
-                "ADMIN",
-                text(13),
-                PINK_800
-        );
+        JLabel adminBadgeText = label(
+                "ADMIN", text(13), PINK_800);
 
         RoundedPanel badge = new RoundedPanel(
                 30, PINK_50, false);
 
         badge.setLayout(new GridBagLayout());
         badge.setBorder(new EmptyBorder(7, 18, 7, 18));
-        badge.add(adminBadge);
+        badge.add(adminBadgeText);
 
         header.add(titleGroup, BorderLayout.WEST);
         header.add(badge, BorderLayout.EAST);
@@ -255,8 +240,6 @@ public class AdminDashboard extends JFrame {
     }
 
     private void showPage(String page) {
-
-        currentPage = page;
 
         cardLayout.show(contentPanel, page);
 
@@ -308,9 +291,10 @@ public class AdminDashboard extends JFrame {
         JPanel welcome = new JPanel();
         welcome.setLayout(
                 new BoxLayout(welcome, BoxLayout.Y_AXIS));
+
         welcome.setBackground(PINK_50);
         welcome.setBorder(
-                new EmptyBorder(27, 30, 27, 30));
+                new EmptyBorder(35, 30, 35, 30));
 
         JLabel welcomeTitle = label(
                 "Your Salon at a Glance",
@@ -324,8 +308,8 @@ public class AdminDashboard extends JFrame {
                 MUTED
         );
 
-        welcomeTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
-        welcomeText.setAlignmentX(Component.LEFT_ALIGNMENT);
+        welcomeTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
+        welcomeText.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         welcome.add(welcomeTitle);
         welcome.add(Box.createVerticalStrut(8));
@@ -336,6 +320,7 @@ public class AdminDashboard extends JFrame {
 
         JPanel stats = new JPanel(
                 new GridLayout(1, 4, 15, 15));
+
         stats.setOpaque(false);
 
         appointmentsCount = new JLabel();
@@ -385,6 +370,7 @@ public class AdminDashboard extends JFrame {
 
         JPanel quickAccess = new JPanel(
                 new GridLayout(1, 3, 15, 15));
+
         quickAccess.setOpaque(false);
 
         quickAccess.add(buildQuickCard(
@@ -411,13 +397,11 @@ public class AdminDashboard extends JFrame {
         page.add(quickAccess);
         page.add(Box.createVerticalStrut(30));
 
-        JLabel note = label(
+        page.add(label(
                 "Dashboard figures are based on the current in-app data.",
                 text(13),
                 PINK_700
-        );
-
-        page.add(note);
+        ));
 
         refreshStatistics();
 
@@ -440,35 +424,26 @@ public class AdminDashboard extends JFrame {
                 new EmptyBorder(20, 18, 20, 18));
 
         JLabel index = label(
-                number,
-                text(12),
-                PINK_500
-        );
+                number, text(12), PINK_500);
 
-        JLabel heading = label(
-                title,
-                text(14),
-                MUTED
-        );
+        JLabel headingLabel = label(
+                title, text(14), MUTED);
 
         value.setFont(heading(31));
         value.setForeground(DARK);
 
         JLabel detail = label(
-                description,
-                text(12),
-                PINK_600
-        );
+                description, text(12), PINK_600);
 
-        for (JComponent c : new JComponent[]{
-                index, heading, value, detail
+        for (JComponent component : new JComponent[]{
+                index, headingLabel, value, detail
         }) {
-            c.setAlignmentX(Component.LEFT_ALIGNMENT);
+            component.setAlignmentX(Component.LEFT_ALIGNMENT);
         }
 
         card.add(index);
         card.add(Box.createVerticalStrut(13));
-        card.add(heading);
+        card.add(headingLabel);
         card.add(Box.createVerticalStrut(5));
         card.add(value);
         card.add(Box.createVerticalStrut(5));
@@ -492,11 +467,8 @@ public class AdminDashboard extends JFrame {
         card.setBorder(
                 new EmptyBorder(22, 20, 22, 20));
 
-        JLabel heading = label(
-                title,
-                heading(21),
-                DARK
-        );
+        JLabel headingLabel = label(
+                title, heading(21), DARK);
 
         JLabel desc = htmlLabel(
                 description,
@@ -507,8 +479,7 @@ public class AdminDashboard extends JFrame {
         );
 
         PillButton button = new PillButton(
-                buttonText, 13, 17, 9
-        );
+                buttonText, 13, 17, 9);
 
         button.style(
                 PINK_800,
@@ -517,13 +488,13 @@ public class AdminDashboard extends JFrame {
                 PINK_900
         );
 
-        heading.setAlignmentX(Component.LEFT_ALIGNMENT);
+        headingLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         desc.setAlignmentX(Component.LEFT_ALIGNMENT);
         button.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         button.addActionListener(e -> action.run());
 
-        card.add(heading);
+        card.add(headingLabel);
         card.add(Box.createVerticalStrut(12));
         card.add(desc);
         card.add(Box.createVerticalStrut(22));
@@ -553,12 +524,11 @@ public class AdminDashboard extends JFrame {
 
         JPanel page = pageContainer();
 
-        JPanel intro = sectionHeader(
+        page.add(sectionHeader(
                 "Appointment Management",
                 "Review bookings and update their current status."
-        );
+        ));
 
-        page.add(intro);
         page.add(Box.createVerticalStrut(22));
 
         appointmentsModel = new DefaultTableModel(
@@ -583,25 +553,23 @@ public class AdminDashboard extends JFrame {
 
         JPanel actions = new JPanel(
                 new FlowLayout(FlowLayout.LEFT, 10, 0));
+
         actions.setOpaque(false);
 
         PillButton complete = new PillButton(
-                "Mark as Completed", 13, 18, 10
-        );
+                "Mark as Completed", 13, 18, 10);
 
         complete.style(
                 PINK_800, Color.WHITE, null, PINK_900);
 
         PillButton cancel = new PillButton(
-                "Cancel Appointment", 13, 18, 10
-        );
+                "Cancel Appointment", 13, 18, 10);
 
         cancel.style(
                 Color.WHITE, PINK_800, PINK_300, PINK_100);
 
         PillButton refresh = new PillButton(
-                "Refresh", 13, 18, 10
-        );
+                "Refresh", 13, 18, 10);
 
         refresh.style(
                 PINK_100, PINK_900, null, PINK_200);
@@ -720,9 +688,7 @@ public class AdminDashboard extends JFrame {
         DefaultTableModel model = new DefaultTableModel(
                 new Object[]{
                     "Employee",
-                    "Specialty",
-                    "Rating",
-                    "Reviews"
+                    "Specialty"
                 }, 0
         ) {
             @Override
@@ -732,14 +698,14 @@ public class AdminDashboard extends JFrame {
         };
 
         String[][] employees = {
-            {"Sarah", "Hair Specialist", "4.9", "120"},
-            {"Nora", "Hair Stylist", "4.8", "95"},
-            {"Lama", "Skincare Specialist", "4.9", "110"},
-            {"Maya", "Beauty Specialist", "4.8", "87"},
-            {"Reem", "Makeup Artist", "4.9", "135"},
-            {"Hala", "Makeup Artist", "4.8", "102"},
-            {"Dana", "Nail Technician", "4.9", "98"},
-            {"Joud", "Nail Technician", "4.8", "90"}
+            {"Sarah", "Hair Specialist"},
+            {"Nora", "Hair Stylist"},
+            {"Lama", "Skincare Specialist"},
+            {"Maya", "Beauty Specialist"},
+            {"Reem", "Makeup Artist"},
+            {"Hala", "Makeup Artist"},
+            {"Dana", "Nail Technician"},
+            {"Joud", "Nail Technician"}
         };
 
         for (String[] employee : employees) {
@@ -753,8 +719,7 @@ public class AdminDashboard extends JFrame {
         page.add(Box.createVerticalStrut(15));
 
         page.add(label(
-                "Employee information is currently displayed from the "
-                + "existing Employees page data.",
+                "Employee information is currently displayed from the existing Employees page data.",
                 text(13),
                 MUTED
         ));
@@ -813,8 +778,7 @@ public class AdminDashboard extends JFrame {
         page.add(Box.createVerticalStrut(15));
 
         page.add(label(
-                "Service information is currently displayed from the "
-                + "existing Services page data.",
+                "Service information is currently displayed from the existing Services page data.",
                 text(13),
                 MUTED
         ));
@@ -923,6 +887,7 @@ public class AdminDashboard extends JFrame {
     private JPanel pageContainer() {
 
         JPanel page = new JPanel();
+
         page.setLayout(
                 new BoxLayout(page, BoxLayout.Y_AXIS));
 
@@ -938,26 +903,21 @@ public class AdminDashboard extends JFrame {
             String subtitle) {
 
         JPanel panel = new JPanel();
+
         panel.setOpaque(false);
         panel.setLayout(
                 new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JLabel heading = label(
-                title,
-                heading(23),
-                DARK
-        );
+        JLabel headingLabel = label(
+                title, heading(23), DARK);
 
         JLabel description = label(
-                subtitle,
-                text(14),
-                MUTED
-        );
+                subtitle, text(14), MUTED);
 
-        heading.setAlignmentX(Component.LEFT_ALIGNMENT);
+        headingLabel.setAlignmentX(Component.LEFT_ALIGNMENT);
         description.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        panel.add(heading);
+        panel.add(headingLabel);
         panel.add(Box.createVerticalStrut(7));
         panel.add(description);
 
@@ -979,14 +939,9 @@ public class AdminDashboard extends JFrame {
         table.setFillsViewportHeight(true);
         table.setAutoCreateRowSorter(true);
 
-        table.getTableHeader().setFont(
-                text(13));
-
-        table.getTableHeader().setForeground(
-                PINK_800);
-
-        table.getTableHeader().setBackground(
-                PINK_50);
+        table.getTableHeader().setFont(text(13));
+        table.getTableHeader().setForeground(PINK_800);
+        table.getTableHeader().setBackground(PINK_50);
 
         table.getTableHeader().setPreferredSize(
                 new Dimension(100, 42));

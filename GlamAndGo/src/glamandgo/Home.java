@@ -308,6 +308,12 @@ public class Home extends JFrame {
                 dispose();
                 break;
 
+            // My Account Navigation
+            case "My Account":
+                new MyAccount().setVisible(true);
+                dispose();
+                break;
+            
             default:
                 JOptionPane.showMessageDialog(
                         this,

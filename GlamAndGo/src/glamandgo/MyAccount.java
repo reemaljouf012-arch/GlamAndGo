@@ -42,16 +42,16 @@ public class MyAccount extends JFrame {
 
     private JComponent buildProfile() {
 
-        String name = UserAccount.getCurrentUserName();
-        String email = UserAccount.getCurrentUserEmail();
+        String currentName = UserAccount.getCurrentUserName();
+        String currentEmail = UserAccount.getCurrentUserEmail();
 
-        if (name == null || name.trim().isEmpty()) {
-            name = "Guest";
-        }
+        final String name =
+                (currentName == null || currentName.trim().isEmpty())
+                ? "Guest" : currentName;
 
-        if (email == null || email.trim().isEmpty()) {
-            email = "No email available";
-        }
+        final String email =
+                (currentEmail == null || currentEmail.trim().isEmpty())
+                ? "No email available" : currentEmail;
 
         JPanel content = new JPanel(new BorderLayout(22, 0));
         content.setOpaque(false);
@@ -113,6 +113,7 @@ public class MyAccount extends JFrame {
                 Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         editProfile.addMouseListener(new java.awt.event.MouseAdapter() {
+
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
                 showPersonalInformation();
@@ -158,8 +159,6 @@ public class MyAccount extends JFrame {
         content.add(title);
         content.add(Box.createVerticalStrut(18));
 
-        // Account links
-
         JPanel links = vbox();
 
         links.setBackground(Color.WHITE);
@@ -169,7 +168,7 @@ public class MyAccount extends JFrame {
         addAccountLink(
                 links,
                 "Personal Information",
-                () -> showPersonalInformation()
+                this::showPersonalInformation
         );
 
         addDivider(links);
@@ -198,71 +197,7 @@ public class MyAccount extends JFrame {
 
         content.add(links);
 
-        content.add(Box.createVerticalStrut(28));
-
-        // Rewards section
-
-        JLabel rewardsTitle = label(
-                "My Rewards",
-                heading(25f),
-                PINK_900
-        );
-
-        rewardsTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
-
-        content.add(rewardsTitle);
-        content.add(Box.createVerticalStrut(14));
-
-        content.add(buildRewards());
-
-        content.add(Box.createVerticalStrut(22));
-
-        // Coupons
-
-        JPanel coupons = new JPanel(new BorderLayout(12, 0));
-        coupons.setOpaque(false);
-        coupons.setBorder(new EmptyBorder(12, 4, 12, 4));
-
-        JLabel couponIcon = label(
-                "%",
-                heading(28f),
-                PINK_700
-        );
-
-        JLabel couponText = label(
-                "My Coupons",
-                text(17f),
-                PINK_900
-        );
-
-        coupons.add(couponIcon, BorderLayout.WEST);
-        coupons.add(couponText, BorderLayout.CENTER);
-
-        JLabel arrow = label(
-                "›",
-                heading(27f),
-                PINK_500
-        );
-
-        coupons.add(arrow, BorderLayout.EAST);
-
-        coupons.setCursor(
-                Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        coupons.addMouseListener(new java.awt.event.MouseAdapter() {
-            @Override
-            public void mouseClicked(java.awt.event.MouseEvent e) {
-                showUnavailable("My Coupons");
-            }
-        });
-
-        content.add(coupons);
-
-        content.add(new JSeparator());
-
-        content.add(Box.createVerticalStrut(18));
-
-        // Logout
+        content.add(Box.createVerticalStrut(25));
 
         PillButton logout = new PillButton(
                 "Log Out", 15f, 28, 10)
@@ -339,59 +274,6 @@ public class MyAccount extends JFrame {
         parent.add(line);
     }
 
-    // ===================== Rewards =====================
-
-    private JComponent buildRewards() {
-
-        RoundedPanel card = new RoundedPanel(
-                22,
-                PINK_900,
-                false
-        );
-
-        card.setLayout(new BorderLayout());
-
-        card.setBorder(new EmptyBorder(24, 28, 24, 28));
-
-        JPanel details = vbox();
-
-        JLabel pointsTitle = label(
-                "Available Points",
-                text(14f),
-                PINK_200
-        );
-
-        JLabel pointsValue = label(
-                "0 Points",
-                heading(27f),
-                Color.WHITE
-        );
-
-        JLabel cashbackTitle = label(
-                "Cashback Balance",
-                text(14f),
-                PINK_200
-        );
-
-        JLabel cashbackValue = label(
-                "SAR 0.00",
-                heading(23f),
-                Color.WHITE
-        );
-
-        details.add(pointsTitle);
-        details.add(Box.createVerticalStrut(5));
-        details.add(pointsValue);
-        details.add(Box.createVerticalStrut(18));
-        details.add(cashbackTitle);
-        details.add(Box.createVerticalStrut(5));
-        details.add(cashbackValue);
-
-        card.add(details, BorderLayout.CENTER);
-
-        return card;
-    }
-
     // ===================== Personal Information =====================
 
     private void showPersonalInformation() {
@@ -415,6 +297,7 @@ public class MyAccount extends JFrame {
         switch (page) {
 
             case "My Appointments":
+            case "Appointments":
                 new MyAppointments().setVisible(true);
                 dispose();
                 break;
@@ -435,6 +318,7 @@ public class MyAccount extends JFrame {
                 break;
 
             case "Cart":
+            case "Shopping Cart":
                 new ShoppingCart().setVisible(true);
                 dispose();
                 break;
@@ -448,16 +332,18 @@ public class MyAccount extends JFrame {
 
         switch (page) {
 
+            case "My Account":
+                // Already on the My Account page.
+                break;
+
             case "Home":
             case "Services":
             case "Products":
             case "Cart":
             case "Shopping Cart":
             case "My Appointments":
+            case "Appointments":
                 openPage(page);
-                break;
-
-            case "My Account":
                 break;
 
             default:

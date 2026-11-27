@@ -111,7 +111,6 @@ public class Home extends JFrame {
                 drawCover(g, img, 0, 0, w, h);
 
                 g.setColor(new Color(255, 243, 247, 175));
-
                 g.fillRect(0, 0, w, h);
 
             } else {
@@ -151,11 +150,8 @@ public class Home extends JFrame {
             BufferedImage img = loadImage(path);
 
             if (img != null) {
-
                 drawCover(g, img, 0, 0, w, h);
-
             } else {
-
                 placeholder(g, w, h, path);
             }
 
@@ -232,46 +228,35 @@ public class Home extends JFrame {
             BufferedImage img = loadImage(path);
 
             if (img != null) {
-
                 drawCover(gi, img, 0, 0, w, h);
-
             } else {
-
                 placeholder(gi, w, h, path);
             }
 
             gi.dispose();
 
             g.setColor(hover ? PINK_500 : PINK_200);
-
-            g.setStroke(new BasicStroke(
-                    hover ? 3f : 1.5f));
-
+            g.setStroke(new BasicStroke(hover ? 3f : 1.5f));
             g.draw(arch);
 
             g.dispose();
         }
     }
 
-    private final List<PillButton> chips =
-            new ArrayList<>();
+    private final List<PillButton> chips = new ArrayList<>();
 
     private JPanel productsGrid;
+    private JPanel reviewsGrid;
 
     // ===================== Constructor =====================
 
     public Home() {
 
         setTitle("Glam & Go");
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         setSize(1280, 820);
-
         setMinimumSize(new Dimension(1100, 600));
-
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
         add(navbar(this::navigate), BorderLayout.NORTH);
@@ -293,7 +278,6 @@ public class Home extends JFrame {
         );
 
         scroll.setBorder(null);
-
         scroll.getVerticalScrollBar().setUnitIncrement(24);
 
         add(scroll, BorderLayout.CENTER);
@@ -327,8 +311,7 @@ public class Home extends JFrame {
             default:
                 JOptionPane.showMessageDialog(
                         this,
-                        "\"" + page
-                        + "\" page is not connected yet.",
+                        "\"" + page + "\" page is not connected yet.",
                         "Glam & Go",
                         JOptionPane.INFORMATION_MESSAGE
                 );
@@ -339,9 +322,7 @@ public class Home extends JFrame {
 
     private JComponent buildHero() {
 
-        HeroPanel hero = new HeroPanel(
-                "/images/hero.jpg", 560);
-
+        HeroPanel hero = new HeroPanel("/images/hero.jpg", 560);
         hero.setLayout(new GridBagLayout());
 
         JPanel box = vbox();
@@ -369,43 +350,34 @@ public class Home extends JFrame {
 
         PillButton book = new PillButton(
                 "Book Appointment", 17f, 32, 13)
-                .style(PINK_800, Color.WHITE,
-                        null, PINK_950);
+                .style(PINK_800, Color.WHITE, null, PINK_950);
 
-        book.addActionListener(
-                e -> navigate("Services"));
+        book.addActionListener(e -> navigate("Services"));
 
         PillButton shop = new PillButton(
                 "Shop Products", 17f, 32, 13)
-                .style(PINK_50, PINK_800,
-                        PINK_800, PINK_100);
+                .style(PINK_50, PINK_800, PINK_800, PINK_100);
 
-        shop.addActionListener(
-                e -> navigate("Products"));
+        shop.addActionListener(e -> navigate("Products"));
 
         JPanel buttons = new JPanel(
                 new FlowLayout(FlowLayout.CENTER, 16, 0));
 
         buttons.setOpaque(false);
-
         buttons.add(book);
         buttons.add(shop);
 
         for (JComponent c : new JComponent[]{
                 eyebrow, title, sub, buttons}) {
-
             c.setAlignmentX(Component.CENTER_ALIGNMENT);
         }
 
         box.add(eyebrow);
         box.add(Box.createVerticalStrut(12));
-
         box.add(title);
         box.add(Box.createVerticalStrut(18));
-
         box.add(sub);
         box.add(Box.createVerticalStrut(34));
-
         box.add(fixedHeight(buttons));
 
         hero.add(box);
@@ -436,27 +408,19 @@ public class Home extends JFrame {
             JPanel cell = vbox();
 
             FeatureIcon icon = new FeatureIcon();
+            icon.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            icon.setAlignmentX(
-                    Component.CENTER_ALIGNMENT);
-
-            JLabel l = label(
-                    item, text(15f), PINK_800);
-
-            l.setAlignmentX(
-                    Component.CENTER_ALIGNMENT);
+            JLabel l = label(item, text(15f), PINK_800);
+            l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
             cell.add(fixedSize(icon));
-
             cell.add(Box.createVerticalStrut(10));
-
             cell.add(l);
 
             row.add(cell);
         }
 
-        return new Section(
-                PINK_100, 32, 1200, row);
+        return new Section(PINK_100, 32, 1200, row);
     }
 
     // ===================== Categories =====================
@@ -479,27 +443,17 @@ public class Home extends JFrame {
 
         grid.setOpaque(false);
 
-        grid.add(categoryCard(
-                "Hair", "/images/cat_hair.jpg"));
-
-        grid.add(categoryCard(
-                "Nails", "/images/cat_nails.jpg"));
-
-        grid.add(categoryCard(
-                "Skincare", "/images/cat_skincare.jpg"));
-
-        grid.add(categoryCard(
-                "Makeup", "/images/cat_makeup.jpg"));
+        grid.add(categoryCard("Hair", "/images/cat_hair.jpg"));
+        grid.add(categoryCard("Nails", "/images/cat_nails.jpg"));
+        grid.add(categoryCard("Skincare", "/images/cat_skincare.jpg"));
+        grid.add(categoryCard("Makeup", "/images/cat_makeup.jpg"));
 
         content.add(grid);
 
-        return new Section(
-                Color.WHITE, 80, 1200, content);
+        return new Section(Color.WHITE, 80, 1200, content);
     }
 
-    private JPanel categoryCard(
-            String name,
-            String imagePath) {
+    private JPanel categoryCard(String name, String imagePath) {
 
         JPanel card = vbox();
 
@@ -508,16 +462,11 @@ public class Home extends JFrame {
                 () -> navigate("Services")
         );
 
-        JLabel l = label(
-                name, heading(26f), PINK_900);
-
-        l.setAlignmentX(
-                Component.CENTER_ALIGNMENT);
+        JLabel l = label(name, heading(26f), PINK_900);
+        l.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         card.add(arch);
-
         card.add(Box.createVerticalStrut(16));
-
         card.add(l);
 
         return card;
@@ -527,9 +476,7 @@ public class Home extends JFrame {
 
     private JComponent buildBooking() {
 
-        RoundedPanel card = new RoundedPanel(
-                32, Color.WHITE, true);
-
+        RoundedPanel card = new RoundedPanel(32, Color.WHITE, true);
         card.setLayout(new GridLayout(1, 2));
 
         card.setBorder(new EmptyBorder(
@@ -539,13 +486,10 @@ public class Home extends JFrame {
                 RoundedPanel.SH
         ));
 
-        card.setPreferredSize(
-                new Dimension(1100, 456));
+        card.setPreferredSize(new Dimension(1100, 456));
 
         JPanel left = vbox();
-
-        left.setBorder(
-                new EmptyBorder(36, 46, 36, 30));
+        left.setBorder(new EmptyBorder(36, 46, 36, 30));
 
         JLabel title = label(
                 "Book Your Appointment",
@@ -563,18 +507,12 @@ public class Home extends JFrame {
                 PINK_900
         );
 
-        title.setAlignmentX(
-                Component.LEFT_ALIGNMENT);
-
-        para.setAlignmentX(
-                Component.LEFT_ALIGNMENT);
+        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        para.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         left.add(title);
-
         left.add(Box.createVerticalStrut(16));
-
         left.add(para);
-
         left.add(Box.createVerticalStrut(22));
 
         for (String s : new String[]{
@@ -586,50 +524,34 @@ public class Home extends JFrame {
                     new FlowLayout(FlowLayout.LEFT, 0, 0));
 
             row.setOpaque(false);
-
             row.add(new CheckBadge());
 
-            JLabel rowText = label(
-                    s, text(16f), PINK_800);
-
-            rowText.setBorder(
-                    new EmptyBorder(0, 12, 0, 0));
+            JLabel rowText = label(s, text(16f), PINK_800);
+            rowText.setBorder(new EmptyBorder(0, 12, 0, 0));
 
             row.add(rowText);
-
-            row.setAlignmentX(
-                    Component.LEFT_ALIGNMENT);
+            row.setAlignmentX(Component.LEFT_ALIGNMENT);
 
             left.add(fixedHeight(row));
-
             left.add(Box.createVerticalStrut(8));
         }
 
         left.add(Box.createVerticalStrut(14));
 
         PillButton cta = new PillButton(
-                "Book Your Spot Now",
-                17f, 30, 13)
-                .style(PINK_800, Color.WHITE,
-                        null, PINK_950);
+                "Book Your Spot Now", 17f, 30, 13)
+                .style(PINK_800, Color.WHITE, null, PINK_950);
 
-        cta.addActionListener(
-                e -> navigate("Services"));
-
-        cta.setAlignmentX(
-                Component.LEFT_ALIGNMENT);
+        cta.addActionListener(e -> navigate("Services"));
+        cta.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         left.add(cta);
-
         left.add(Box.createVerticalGlue());
 
         card.add(left);
+        card.add(new PhotoPanel("/images/booking.jpg", 32));
 
-        card.add(new PhotoPanel(
-                "/images/booking.jpg", 32));
-
-        return new Section(
-                PINK_50, 80, 1100, card);
+        return new Section(PINK_50, 80, 1100, card);
     }
 
     // ===================== Featured Products =====================
@@ -653,21 +575,14 @@ public class Home extends JFrame {
         chipRow.setOpaque(false);
 
         for (String cat : new String[]{
-                "All",
-                "Hair Care",
-                "Skincare",
-                "Makeup",
-                "Nails"}) {
+                "All", "Hair Care", "Skincare", "Makeup", "Nails"}) {
 
-            PillButton chip = new PillButton(
-                    cat, 16f, 24, 9);
+            PillButton chip = new PillButton(cat, 16f, 24, 9);
 
             chips.add(chip);
 
             chip.addActionListener(e -> {
-
                 selectChip(chip);
-
                 showProducts(cat);
             });
 
@@ -677,7 +592,6 @@ public class Home extends JFrame {
         selectChip(chips.get(0));
 
         content.add(fixedHeight(chipRow));
-
         content.add(Box.createVerticalStrut(34));
 
         productsGrid = new JPanel(
@@ -688,7 +602,6 @@ public class Home extends JFrame {
         showProducts("All");
 
         content.add(productsGrid);
-
         content.add(Box.createVerticalStrut(30));
 
         JLabel viewAll = label(
@@ -697,12 +610,9 @@ public class Home extends JFrame {
                 PINK_800
         );
 
-        viewAll.setAlignmentX(
-                Component.CENTER_ALIGNMENT);
-
-        viewAll.setCursor(
-                Cursor.getPredefinedCursor(
-                        Cursor.HAND_CURSOR));
+        viewAll.setAlignmentX(Component.CENTER_ALIGNMENT);
+        viewAll.setCursor(Cursor.getPredefinedCursor(
+                Cursor.HAND_CURSOR));
 
         viewAll.addMouseListener(new MouseAdapter() {
 
@@ -724,8 +634,7 @@ public class Home extends JFrame {
 
         content.add(viewAll);
 
-        return new Section(
-                Color.WHITE, 80, 1200, content);
+        return new Section(Color.WHITE, 80, 1200, content);
     }
 
     // ===================== Product Filter =====================
@@ -735,22 +644,9 @@ public class Home extends JFrame {
         for (PillButton c : chips) {
 
             if (c == active) {
-
-                c.style(
-                        PINK_800,
-                        Color.WHITE,
-                        null,
-                        PINK_800
-                );
-
+                c.style(PINK_800, Color.WHITE, null, PINK_800);
             } else {
-
-                c.style(
-                        null,
-                        PINK_800,
-                        PINK_300,
-                        PINK_100
-                );
+                c.style(null, PINK_800, PINK_300, PINK_100);
             }
         }
     }
@@ -765,7 +661,6 @@ public class Home extends JFrame {
 
             if (!category.equals("All")
                     && !p.category.equals(category)) {
-
                 continue;
             }
 
@@ -780,16 +675,12 @@ public class Home extends JFrame {
         }
 
         for (int i = count; i < 4; i++) {
-
             JPanel filler = new JPanel();
-
             filler.setOpaque(false);
-
             productsGrid.add(filler);
         }
 
         productsGrid.revalidate();
-
         productsGrid.repaint();
     }
 
@@ -808,8 +699,6 @@ public class Home extends JFrame {
 
         content.add(Box.createVerticalStrut(28));
 
-        // Add Review button on the left
-
         JPanel actionRow = new JPanel(
                 new FlowLayout(FlowLayout.LEFT, 0, 0));
 
@@ -817,22 +706,20 @@ public class Home extends JFrame {
 
         PillButton addReviewButton = new PillButton(
                 "Add Review", 16f, 24, 10)
-                .style(PINK_800, Color.WHITE,
-                        null, PINK_950);
+                .style(PINK_800, Color.WHITE, null, PINK_950);
 
         addReviewButton.addActionListener(
-                e -> openAddReviewDialog(reviewsGrid));
+                e -> openAddReviewDialog());
 
         actionRow.add(addReviewButton);
 
         content.add(fixedHeight(actionRow));
-
         content.add(Box.createVerticalStrut(24));
 
-        // Reviews grid
+        // Horizontal reviews container
 
         reviewsGrid = new JPanel(
-                new GridLayout(0, 3, 28, 28));
+                new FlowLayout(FlowLayout.LEFT, 28, 5));
 
         reviewsGrid.setOpaque(false);
 
@@ -857,19 +744,29 @@ public class Home extends JFrame {
                 + "The quality is great and ordering was smooth."
         ));
 
-        content.add(reviewsGrid);
+        JScrollPane reviewsScroll = new JScrollPane(
+                reviewsGrid,
+                ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED
+        );
 
-        return new Section(
-                PINK_50, 80, 1200, content);
+        reviewsScroll.setBorder(null);
+        reviewsScroll.setOpaque(false);
+        reviewsScroll.getViewport().setOpaque(false);
+
+        reviewsScroll.getHorizontalScrollBar().setUnitIncrement(25);
+
+        reviewsScroll.setPreferredSize(new Dimension(1200, 230));
+        reviewsScroll.setMaximumSize(new Dimension(1200, 230));
+
+        content.add(reviewsScroll);
+
+        return new Section(PINK_50, 80, 1200, content);
     }
-
-    // Shared reviews panel
-
-    private JPanel reviewsGrid;
 
     // ===================== Add Review Dialog =====================
 
-    private void openAddReviewDialog(JPanel grid) {
+    private void openAddReviewDialog() {
 
         String userName = UserAccount.getCurrentUserName();
 
@@ -886,25 +783,12 @@ public class Home extends JFrame {
         }
 
         JPanel form = new JPanel();
-
-        form.setLayout(new BoxLayout(
-                form, BoxLayout.Y_AXIS));
-
+        form.setLayout(new BoxLayout(form, BoxLayout.Y_AXIS));
         form.setBackground(Color.WHITE);
-
         form.setBorder(new EmptyBorder(12, 10, 12, 10));
 
-        JLabel nameTitle = label(
-                "Your Name",
-                text(14f),
-                PINK_700
-        );
-
-        JLabel nameValue = label(
-                userName,
-                heading(20f),
-                PINK_900
-        );
+        JLabel nameTitle = label("Your Name", text(14f), PINK_700);
+        JLabel nameValue = label(userName, heading(20f), PINK_900);
 
         nameTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
         nameValue.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -912,14 +796,10 @@ public class Home extends JFrame {
         form.add(nameTitle);
         form.add(Box.createVerticalStrut(5));
         form.add(nameValue);
-
         form.add(Box.createVerticalStrut(20));
 
         JLabel ratingTitle = label(
-                "Your Rating",
-                text(14f),
-                PINK_700
-        );
+                "Your Rating", text(14f), PINK_700);
 
         ratingTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -927,22 +807,16 @@ public class Home extends JFrame {
                 new JComboBox<>(new Integer[]{5, 4, 3, 2, 1});
 
         ratingBox.setFont(text(16f));
-        ratingBox.setMaximumSize(
-                new Dimension(Integer.MAX_VALUE, 38));
-
+        ratingBox.setMaximumSize(new Dimension(Integer.MAX_VALUE, 38));
         ratingBox.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         form.add(ratingTitle);
         form.add(Box.createVerticalStrut(7));
         form.add(ratingBox);
-
         form.add(Box.createVerticalStrut(20));
 
         JLabel commentTitle = label(
-                "Your Review",
-                text(14f),
-                PINK_700
-        );
+                "Your Review", text(14f), PINK_700);
 
         commentTitle.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -993,10 +867,12 @@ public class Home extends JFrame {
 
         int rating = (Integer) ratingBox.getSelectedItem();
 
-        grid.add(reviewCard(userName, rating, comment));
+        // Add the new review at the end of the horizontal list
 
-        grid.revalidate();
-        grid.repaint();
+        reviewsGrid.add(reviewCard(userName, rating, comment));
+
+        reviewsGrid.revalidate();
+        reviewsGrid.repaint();
 
         JOptionPane.showMessageDialog(
                 this,
@@ -1027,15 +903,18 @@ public class Home extends JFrame {
                 s + 24
         ));
 
+        // Fixed card dimensions keep all reviews in one row
+
+        card.setPreferredSize(new Dimension(380, 195));
+        card.setMinimumSize(new Dimension(380, 195));
+        card.setMaximumSize(new Dimension(380, 195));
+
         JPanel header = new JPanel(
                 new BorderLayout(14, 0));
 
         header.setOpaque(false);
 
-        header.add(
-                new Avatar(name),
-                BorderLayout.WEST
-        );
+        header.add(new Avatar(name), BorderLayout.WEST);
 
         header.add(
                 label(name, heading(20f), PINK_900),
@@ -1046,7 +925,6 @@ public class Home extends JFrame {
                 new FlowLayout(FlowLayout.RIGHT, 0, 18));
 
         starWrap.setOpaque(false);
-
         starWrap.add(new Stars(rating, 14));
 
         header.add(starWrap, BorderLayout.EAST);
@@ -1056,7 +934,7 @@ public class Home extends JFrame {
         card.add(
                 htmlLabel(
                         comment,
-                        250,
+                        300,
                         "left",
                         text(16f),
                         PINK_900

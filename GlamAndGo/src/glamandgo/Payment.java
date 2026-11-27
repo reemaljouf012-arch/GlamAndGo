@@ -1,3 +1,4 @@
+
 package glamandgo;
 
 import java.awt.*;
@@ -26,29 +27,9 @@ public class Payment extends JFrame {
 
     // ===================== Saved Cards =====================
 
-    private static final ArrayList<SavedCard> savedCards =
-            new ArrayList<>();
-
-    private SavedCard selectedCard;
+    private PaymentCardStore.SavedCard selectedCard;
 
     private final JPanel savedCardsPanel = vbox();
-
-    private static class SavedCard {
-
-        final String holderName;
-        final String cardType;
-        final String lastFour;
-        final String expiryDate;
-
-        SavedCard(String holderName, String cardType,
-                String lastFour, String expiryDate) {
-
-            this.holderName = holderName;
-            this.cardType = cardType;
-            this.lastFour = lastFour;
-            this.expiryDate = expiryDate;
-        }
-    }
 
     // ===================== Customer Information =====================
 
@@ -113,8 +94,8 @@ public class Payment extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        if (!savedCards.isEmpty()) {
-            selectedCard = savedCards.get(0);
+        if (PaymentCardStore.hasCards()) {
+            selectedCard = PaymentCardStore.getSavedCards().get(0);
         }
 
         add(navbar(this::navigate), BorderLayout.NORTH);
@@ -526,7 +507,10 @@ public class Payment extends JFrame {
 
         savedCardsPanel.removeAll();
 
-        if (savedCards.isEmpty()) {
+        java.util.List<PaymentCardStore.SavedCard> cards =
+                PaymentCardStore.getSavedCards();
+
+        if (cards.isEmpty()) {
 
             selectedCard = null;
 
@@ -544,13 +528,13 @@ public class Payment extends JFrame {
 
         } else {
 
-            if (!savedCards.contains(selectedCard)) {
-                selectedCard = savedCards.get(0);
+            if (!PaymentCardStore.containsCard(selectedCard)) {
+                selectedCard = cards.get(0);
             }
 
             ButtonGroup cardsGroup = new ButtonGroup();
 
-            for (SavedCard card : savedCards) {
+            for (PaymentCardStore.SavedCard card : cards) {
 
                 savedCardsPanel.add(
                         buildSavedCard(card, cardsGroup)
@@ -572,7 +556,7 @@ public class Payment extends JFrame {
     // ===================== Single Saved Card =====================
 
     private JComponent buildSavedCard(
-            SavedCard card,
+            PaymentCardStore.SavedCard card,
             ButtonGroup group) {
 
         RoundedPanel cardBox = new RoundedPanel(
@@ -675,7 +659,7 @@ public class Payment extends JFrame {
 
         return fixedHeight(cardBox);
     }
-    
+
     // ===================== Add New Card Dialog =====================
 
     private void showAddCardDialog() {
@@ -1107,14 +1091,15 @@ public class Payment extends JFrame {
                     number.length() - 4
             );
 
-            SavedCard newCard = new SavedCard(
-                    holder,
-                    type,
-                    lastFour,
-                    expiry
-            );
+            PaymentCardStore.SavedCard newCard =
+                    new PaymentCardStore.SavedCard(
+                            holder,
+                            type,
+                            lastFour,
+                            expiry
+                    );
 
-            savedCards.add(newCard);
+            PaymentCardStore.addCard(newCard);
 
             selectedCard = newCard;
 
@@ -1599,7 +1584,8 @@ public class Payment extends JFrame {
 
     // ===================== Remove Saved Card =====================
 
-    private void removeSavedCard(SavedCard card) {
+    private void removeSavedCard(
+            PaymentCardStore.SavedCard card) {
 
         int result = JOptionPane.showConfirmDialog(
                 this,
@@ -1611,10 +1597,9 @@ public class Payment extends JFrame {
 
         if (result == JOptionPane.YES_OPTION) {
 
-            savedCards.remove(card);
+            PaymentCardStore.removeCard(card);
 
             if (selectedCard == card) {
-
                 selectedCard = null;
             }
 
@@ -2023,7 +2008,7 @@ public class Payment extends JFrame {
         if (cardRadio.isSelected()) {
 
             if (selectedCard == null
-                    || !savedCards.contains(selectedCard)) {
+                    || !PaymentCardStore.containsCard(selectedCard)) {
 
                 showWarning(
                         "Please add or select a payment card."

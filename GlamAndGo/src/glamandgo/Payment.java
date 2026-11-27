@@ -1,4 +1,3 @@
-
 package glamandgo;
 
 import java.awt.*;
@@ -19,6 +18,7 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 
 import static glamandgo.Theme.*;
+import static javax.swing.WindowConstants.EXIT_ON_CLOSE;
 
 public class Payment extends JFrame {
 
@@ -107,15 +107,10 @@ public class Payment extends JFrame {
     public Payment() {
 
         setTitle("Glam & Go | Payment");
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         setSize(1280, 820);
-
         setMinimumSize(new Dimension(1100, 650));
-
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
         if (!savedCards.isEmpty()) {
@@ -680,33 +675,23 @@ public class Payment extends JFrame {
 
         return fixedHeight(cardBox);
     }
-
+    
     // ===================== Add New Card Dialog =====================
 
     private void showAddCardDialog() {
 
         JDialog dialog = new JDialog(
-                this,
-                "Glam & Go | Add New Card",
-                true
+                this, "Glam & Go | Add New Card", true
         );
 
-        dialog.setDefaultCloseOperation(
-                JDialog.DISPOSE_ON_CLOSE
-        );
-
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setResizable(false);
 
         JPanel root = new JPanel(new GridBagLayout());
-
         root.setBackground(Color.WHITE);
+        root.setBorder(new EmptyBorder(25, 30, 25, 30));
 
-        root.setBorder(
-                new EmptyBorder(25, 30, 25, 30)
-        );
-
-        GridBagConstraints gbc =
-                new GridBagConstraints();
+        GridBagConstraints gbc = new GridBagConstraints();
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -714,17 +699,11 @@ public class Payment extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(0, 0, 12, 0);
 
-        // ===================== Title =====================
-
         JLabel title = label(
-                "Add New Card",
-                heading(30f),
-                PINK_900
+                "Add New Card", heading(30f), PINK_900
         );
 
-        title.setHorizontalAlignment(
-                SwingConstants.CENTER
-        );
+        title.setHorizontalAlignment(SwingConstants.CENTER);
 
         root.add(title, gbc);
 
@@ -732,17 +711,14 @@ public class Payment extends JFrame {
 
         JLabel subtitle = label(
                 "Enter your test card details.",
-                text(15f),
-                PINK_800
+                text(15f), PINK_800
         );
 
-        subtitle.setHorizontalAlignment(
-                SwingConstants.CENTER
-        );
+        subtitle.setHorizontalAlignment(SwingConstants.CENTER);
 
         root.add(subtitle, gbc);
 
-        // ===================== Cardholder Name =====================
+        // Cardholder Name
 
         JTextField holderField = new JTextField();
 
@@ -752,22 +728,17 @@ public class Payment extends JFrame {
                 "Name as shown on the card"
         );
 
-        JPanel holderPanel = dialogField(
-                "Cardholder Name",
-                holderField
-        );
-
         gbc.gridy++;
 
-        root.add(holderPanel, gbc);
+        root.add(dialogField(
+                "Cardholder Name", holderField
+        ), gbc);
 
-        // ===================== Card Type =====================
+        // Card Type
 
         JComboBox<String> typeCombo =
                 new JComboBox<>(new String[]{
-                    "Mada",
-                    "Visa",
-                    "Mastercard"
+                    "Mada", "Visa", "Mastercard"
                 });
 
         styleCardCombo(typeCombo);
@@ -783,16 +754,13 @@ public class Payment extends JFrame {
                 BorderLayout.NORTH
         );
 
-        typePanel.add(
-                typeCombo,
-                BorderLayout.CENTER
-        );
+        typePanel.add(typeCombo, BorderLayout.CENTER);
 
         gbc.gridy++;
 
         root.add(typePanel, gbc);
 
-        // ===================== Card Number =====================
+        // Card Number
 
         JTextField numberField = new JTextField();
 
@@ -803,14 +771,11 @@ public class Payment extends JFrame {
         setCardNumberFilter(numberField);
 
         JPanel numberPanel = dialogField(
-                "Card Number",
-                numberField
+                "Card Number", numberField
         );
 
         JLabel numberCount = label(
-                "0 / 16",
-                text(12f),
-                PINK_600
+                "0 / 16", text(12f), PINK_600
         );
 
         numberCount.setHorizontalAlignment(
@@ -818,8 +783,7 @@ public class Payment extends JFrame {
         );
 
         numberPanel.add(
-                numberCount,
-                BorderLayout.SOUTH
+                numberCount, BorderLayout.SOUTH
         );
 
         numberField.getDocument().addDocumentListener(
@@ -831,9 +795,7 @@ public class Payment extends JFrame {
                         .replaceAll("[^0-9]", "")
                         .length();
 
-                numberCount.setText(
-                        count + " / 16"
-                );
+                numberCount.setText(count + " / 16");
             }
 
             @Override
@@ -856,40 +818,31 @@ public class Payment extends JFrame {
 
         root.add(numberPanel, gbc);
 
-        // ===================== Expiry Date =====================
+        // Expiry Date
 
-        JComboBox<String> monthCombo =
-                new JComboBox<>();
+        JComboBox<String> monthCombo = new JComboBox<>();
 
         monthCombo.addItem("MM");
 
         for (int month = 1; month <= 12; month++) {
 
             monthCombo.addItem(
-                    String.format(
-                            Locale.US,
-                            "%02d",
-                            month
-                    )
+                    String.format(Locale.US, "%02d", month)
             );
         }
 
         styleCardCombo(monthCombo);
 
-        JComboBox<String> yearCombo =
-                new JComboBox<>();
+        JComboBox<String> yearCombo = new JComboBox<>();
 
         yearCombo.addItem("YYYY");
 
         int currentYear = YearMonth.now().getYear();
 
         for (int year = currentYear;
-                year <= currentYear + 15;
-                year++) {
+                year <= currentYear + 15; year++) {
 
-            yearCombo.addItem(
-                    String.valueOf(year)
-            );
+            yearCombo.addItem(String.valueOf(year));
         }
 
         styleCardCombo(yearCombo);
@@ -912,18 +865,15 @@ public class Payment extends JFrame {
         dateFields.setOpaque(false);
 
         dateFields.add(monthCombo);
-
         dateFields.add(yearCombo);
 
         expiryPanel.add(
-                dateFields,
-                BorderLayout.CENTER
+                dateFields, BorderLayout.CENTER
         );
 
-        // ===================== CVV =====================
+        // CVV
 
-        JPasswordField cvvField =
-                new JPasswordField();
+        JPasswordField cvvField = new JPasswordField();
 
         cvvField.setEchoChar('\u2022');
 
@@ -933,25 +883,17 @@ public class Payment extends JFrame {
 
         setDigitFilter(cvvField, 3);
 
-        JPanel cvvPanel = dialogField(
-                "CVV",
-                cvvField
-        );
+        JPanel cvvPanel = dialogField("CVV", cvvField);
 
         JLabel cvvCount = label(
-                "0 / 3",
-                text(12f),
-                PINK_600
+                "0 / 3", text(12f), PINK_600
         );
 
         cvvCount.setHorizontalAlignment(
                 SwingConstants.RIGHT
         );
 
-        cvvPanel.add(
-                cvvCount,
-                BorderLayout.SOUTH
-        );
+        cvvPanel.add(cvvCount, BorderLayout.SOUTH);
 
         cvvField.getDocument().addDocumentListener(
                 new DocumentListener() {
@@ -980,7 +922,7 @@ public class Payment extends JFrame {
             }
         });
 
-        // ===================== Date and CVV Layout =====================
+        // Date and CVV Layout
 
         JPanel expiryWrapper = new JPanel(
                 new BorderLayout()
@@ -989,8 +931,7 @@ public class Payment extends JFrame {
         expiryWrapper.setOpaque(false);
 
         expiryWrapper.add(
-                expiryPanel,
-                BorderLayout.NORTH
+                expiryPanel, BorderLayout.NORTH
         );
 
         JPanel cvvWrapper = new JPanel(
@@ -1000,8 +941,7 @@ public class Payment extends JFrame {
         cvvWrapper.setOpaque(false);
 
         cvvWrapper.add(
-                cvvPanel,
-                BorderLayout.NORTH
+                cvvPanel, BorderLayout.NORTH
         );
 
         JPanel details = new JPanel(
@@ -1011,14 +951,13 @@ public class Payment extends JFrame {
         details.setOpaque(false);
 
         details.add(expiryWrapper);
-
         details.add(cvvWrapper);
 
         gbc.gridy++;
 
         root.add(details, gbc);
 
-        // ===================== Testing Notice =====================
+        // Testing Notice
 
         JLabel notice = htmlLabel(
                 "For testing purposes only. "
@@ -1039,13 +978,10 @@ public class Payment extends JFrame {
 
         root.add(notice, gbc);
 
-        // ===================== Add Card Button =====================
+        // Add Card Button
 
         PillButton saveButton = new PillButton(
-                "Add Card",
-                17f,
-                40,
-                12
+                "Add Card", 17f, 40, 12
         ).style(
                 PINK_800,
                 Color.WHITE,
@@ -1079,7 +1015,6 @@ public class Payment extends JFrame {
             }
 
             // Validate Card Number Length Only
-            // Any fictional 16-digit number is accepted.
 
             if (!number.matches("[0-9]{16}")) {
 
@@ -1138,6 +1073,7 @@ public class Payment extends JFrame {
             for (char digit : cvv) {
 
                 if (digit < '0' || digit > '9') {
+
                     validCvv = false;
                 }
             }
@@ -1183,7 +1119,6 @@ public class Payment extends JFrame {
             selectedCard = newCard;
 
             numberField.setText("");
-
             cvvField.setText("");
 
             refreshSavedCards();
@@ -1205,18 +1140,14 @@ public class Payment extends JFrame {
 
         root.add(buttonPanel, gbc);
 
-        // ===================== Cancel Button =====================
+        // Cancel Button
 
         JButton cancelButton = new JButton("Cancel");
 
         cancelButton.setFont(text(15f));
-
         cancelButton.setForeground(PINK_800);
-
         cancelButton.setBorderPainted(false);
-
         cancelButton.setContentAreaFilled(false);
-
         cancelButton.setFocusPainted(false);
 
         cancelButton.setCursor(
@@ -1228,7 +1159,6 @@ public class Payment extends JFrame {
         cancelButton.addActionListener(e -> {
 
             numberField.setText("");
-
             cvvField.setText("");
 
             dialog.dispose();
@@ -1256,12 +1186,11 @@ public class Payment extends JFrame {
                     java.awt.event.WindowEvent e) {
 
                 numberField.setText("");
-
                 cvvField.setText("");
             }
         });
 
-        // ===================== Responsive Dialog =====================
+        // Responsive Dialog
 
         PageBody dialogBody = new PageBody();
 
@@ -1320,8 +1249,7 @@ public class Payment extends JFrame {
 
     // ===================== Style Card ComboBox =====================
 
-    private void styleCardCombo(
-            JComboBox<String> combo) {
+    private void styleCardCombo(JComboBox<String> combo) {
 
         combo.setFont(text(16f));
 
@@ -1360,20 +1288,18 @@ public class Payment extends JFrame {
 
             @Override
             public void insertString(
-                    FilterBypass fb,
+                    DocumentFilter.FilterBypass fb,
                     int offset,
                     String value,
                     AttributeSet attr)
                     throws BadLocationException {
 
-                replace(
-                        fb, offset, 0, value, attr
-                );
+                replace(fb, offset, 0, value, attr);
             }
 
             @Override
             public void replace(
-                    FilterBypass fb,
+                    DocumentFilter.FilterBypass fb,
                     int offset,
                     int length,
                     String value,
@@ -1420,20 +1346,18 @@ public class Payment extends JFrame {
 
             @Override
             public void insertString(
-                    FilterBypass fb,
+                    DocumentFilter.FilterBypass fb,
                     int offset,
                     String value,
                     AttributeSet attr)
                     throws BadLocationException {
 
-                replace(
-                        fb, offset, 0, value, attr
-                );
+                replace(fb, offset, 0, value, attr);
             }
 
             @Override
             public void remove(
-                    FilterBypass fb,
+                    DocumentFilter.FilterBypass fb,
                     int offset,
                     int length)
                     throws BadLocationException {
@@ -1464,7 +1388,7 @@ public class Payment extends JFrame {
 
             @Override
             public void replace(
-                    FilterBypass fb,
+                    DocumentFilter.FilterBypass fb,
                     int offset,
                     int length,
                     String value,
@@ -1490,11 +1414,8 @@ public class Payment extends JFrame {
                         + oldText.substring(offset + length);
 
                 String digits = newText.replaceAll(
-                        "[^0-9]",
-                        ""
+                        "[^0-9]", ""
                 );
-
-                // Maximum 16 Digits
 
                 if (digits.length() > 16) {
                     return;
@@ -1506,16 +1427,14 @@ public class Payment extends JFrame {
                         new StringBuilder();
 
                 for (int i = 0;
-                        i < digits.length();
-                        i++) {
+                        i < digits.length(); i++) {
 
                     if (i > 0 && i % 4 == 0) {
+
                         formatted.append(" ");
                     }
 
-                    formatted.append(
-                            digits.charAt(i)
-                    );
+                    formatted.append(digits.charAt(i));
                 }
 
                 // Calculate Caret Position
@@ -1577,20 +1496,18 @@ public class Payment extends JFrame {
 
             @Override
             public void insertString(
-                    FilterBypass fb,
+                    DocumentFilter.FilterBypass fb,
                     int offset,
                     String value,
                     AttributeSet attr)
                     throws BadLocationException {
 
-                replace(
-                        fb, offset, 0, value, attr
-                );
+                replace(fb, offset, 0, value, attr);
             }
 
             @Override
             public void replace(
-                    FilterBypass fb,
+                    DocumentFilter.FilterBypass fb,
                     int offset,
                     int length,
                     String value,
@@ -1697,6 +1614,7 @@ public class Payment extends JFrame {
             savedCards.remove(card);
 
             if (selectedCard == card) {
+
                 selectedCard = null;
             }
 
@@ -1991,7 +1909,7 @@ public class Payment extends JFrame {
         repaint();
     }
 
-    // ===================== Calculate Total =====================
+    // ===================== Calculate Subtotal =====================
 
     private double calculateSubtotal() {
 
@@ -2007,9 +1925,12 @@ public class Payment extends JFrame {
         return subtotal;
     }
 
+    // ===================== Calculate Delivery Fee =====================
+
     private double calculateDeliveryFee() {
 
         if (ProductDetails.cart.isEmpty()) {
+
             return 0.0;
         }
 
@@ -2018,11 +1939,15 @@ public class Payment extends JFrame {
                 : 0.0;
     }
 
+    // ===================== Calculate Total =====================
+
     private double calculateTotal() {
 
         return calculateSubtotal()
                 + calculateDeliveryFee();
     }
+
+    // ===================== Update Totals =====================
 
     private void updateTotals() {
 
@@ -2151,6 +2076,7 @@ public class Payment extends JFrame {
     private void placeOrder() {
 
         if (!validateOrder()) {
+
             return;
         }
 
@@ -2176,20 +2102,29 @@ public class Payment extends JFrame {
 
         double total = calculateTotal();
 
+        double deliveryFee = calculateDeliveryFee();
+
+        String orderAddress = "";
+
         String address = "";
 
         if (deliveryRadio.isSelected()) {
 
-            address = "\nAddress: "
-                    + cityField.getText().trim()
+            orderAddress =
+                    cityField.getText().trim()
                     + ", "
                     + districtField.getText().trim()
                     + ", "
                     + streetField.getText().trim()
                     + "\n"
-                    + addressField.getText().trim()
+                    + addressField.getText().trim();
+
+            address = "\nAddress: "
+                    + orderAddress
                     + "\n";
         }
+
+        // Confirm Order
 
         int result = JOptionPane.showConfirmDialog(
                 this,
@@ -2211,30 +2146,47 @@ public class Payment extends JFrame {
         );
 
         if (result != JOptionPane.YES_OPTION) {
+
             return;
         }
-
-        // Temporary Order Confirmation
-        // Database integration will be added later.
 
         String paymentStatus =
                 cardRadio.isSelected()
                         ? "Simulated payment successful."
                         : "Payment due upon receiving your order.";
 
+        // ===================== Save Order in My Orders =====================
+
+        MyOrders.addOrder(
+                nameField.getText().trim(),
+                phoneField.getText().trim(),
+                receivingMethod,
+                paymentMethod,
+                orderAddress,
+                deliveryFee,
+                ProductDetails.cart
+        );
+
+        // Clear Shopping Cart After Saving Order
+
         ProductDetails.cart.clear();
+
+        // Order Confirmation
 
         JOptionPane.showMessageDialog(
                 this,
                 "Your order has been confirmed!\n\n"
                 + "Thank you for shopping with Glam & Go.\n\n"
                 + paymentStatus
-                + "\nTotal: " + money(total),
+                + "\nTotal: " + money(total)
+                + "\n\nYou can view your order in My Orders.",
                 "Order Confirmation",
                 JOptionPane.INFORMATION_MESSAGE
         );
 
-        new Home().setVisible(true);
+        // Open My Orders
+
+        new MyOrders().setVisible(true);
 
         dispose();
     }
@@ -2273,6 +2225,24 @@ public class Payment extends JFrame {
             case "Shopping Cart":
 
                 new ShoppingCart().setVisible(true);
+
+                dispose();
+
+                break;
+
+            case "Appointments":
+            case "My Appointments":
+
+                new MyAppointments().setVisible(true);
+
+                dispose();
+
+                break;
+
+            case "My Orders":
+            case "Orders":
+
+                new MyOrders().setVisible(true);
 
                 dispose();
 
@@ -2393,6 +2363,8 @@ public class Payment extends JFrame {
         }
     }
 
+    // ===================== Money Format =====================
+
     private String money(double amount) {
 
         return String.format(
@@ -2401,6 +2373,8 @@ public class Payment extends JFrame {
                 amount
         );
     }
+
+    // ===================== Warning Message =====================
 
     private void showWarning(String message) {
 

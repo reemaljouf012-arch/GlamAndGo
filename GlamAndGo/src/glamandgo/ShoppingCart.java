@@ -33,15 +33,10 @@ public class ShoppingCart extends JFrame {
     public ShoppingCart() {
 
         setTitle("Glam & Go | Shopping Cart");
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
         setSize(1280, 820);
-
         setMinimumSize(new Dimension(1100, 600));
-
         setLocationRelativeTo(null);
-
         setLayout(new BorderLayout());
 
         add(navbar(this::navigate), BorderLayout.NORTH);
@@ -49,9 +44,7 @@ public class ShoppingCart extends JFrame {
         PageBody body = new PageBody();
 
         body.add(buildTitle());
-
         body.add(buildCart());
-
         body.add(footer(this::navigate));
 
         JScrollPane scroll = new JScrollPane(
@@ -61,7 +54,6 @@ public class ShoppingCart extends JFrame {
         );
 
         scroll.setBorder(null);
-
         scroll.getVerticalScrollBar().setUnitIncrement(24);
 
         add(scroll, BorderLayout.CENTER);
@@ -661,6 +653,28 @@ public class ShoppingCart extends JFrame {
             case "Shopping Cart":
 
                 refreshCart();
+
+                break;
+
+            // My Appointments Navigation
+
+            case "Appointments":
+            case "My Appointments":
+
+                new MyAppointments().setVisible(true);
+
+                dispose();
+
+                break;
+
+            // My Orders Navigation
+
+            case "My Orders":
+            case "Orders":
+
+                new MyOrders().setVisible(true);
+
+                dispose();
 
                 break;
 

@@ -133,10 +133,33 @@ public class Products extends JFrame {
                 break;
 
             // Shopping Cart Navigation
+
             case "Cart":
             case "Shopping Cart":
 
                 new ShoppingCart().setVisible(true);
+
+                dispose();
+
+                break;
+
+            // My Appointments Navigation
+
+            case "Appointments":
+            case "My Appointments":
+
+                new MyAppointments().setVisible(true);
+
+                dispose();
+
+                break;
+
+            // My Orders Navigation
+
+            case "My Orders":
+            case "Orders":
+
+                new MyOrders().setVisible(true);
 
                 dispose();
 
